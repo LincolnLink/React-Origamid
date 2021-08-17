@@ -123,23 +123,23 @@ console.log('__________Spread___________');
 //Spread: Transforma o Array em numeros espalhados.
 
 // A função aceita apenas numeros, e não array;
-const numeros = [10, 5, 25];
+const numeros1 = [10, 5, 25];
 
 //Vai da erro
-//const maior = Math.max(numeros);
+//const maior = Math.max(numeros1);
 
 const maior = Math.max(10, 5, 20);
 console.log('sem Spread: ', maior);
 
-// o Spread espalha os numeros.
+// o Spread espalha os numeros1.
 
-const maior2 = Math.max(...numeros);
+const maior2 = Math.max(...numeros1);
 console.log('com Spread: ', maior2);
 
 console.log('');
 console.log('Outro exemplo de Spread');
 
-const numeros2 = [13, ...numeros, 24, 32, 33];
+const numeros2 = [13, ...numeros1, 24, 32, 33];
 console.log('Clonando array e espalhando outro dentro: ');
 console.log(numeros2);
 
@@ -202,7 +202,7 @@ async function fetchProdutos(url) {
   const response = await fetch(url);
   const json = await response.json();
 
-  console.log('nova refatoração: ', json);
+  console.log('nova refatoração do fetch: ', json);
   //retorna uma promise
   //return response;
   return json;
@@ -211,3 +211,57 @@ async function fetchProdutos(url) {
 const produtos = fetchProdutos(
   'https://ranekapi.origamid.dev/json/api/produto',
 );
+
+/*___________________________________*/
+console.log('');
+console.log('5° Conceito: Arrays (Map e Filter)');
+console.log('');
+
+const precos = [
+  'Crédito',
+  'R$ 200',
+  'R$ 400',
+  'Contas Pagar',
+  'R$ 300',
+  'R$ 400',
+  'Meus dados',
+];
+console.log('array: ', precos);
+
+// Retorna uma array nova, que contem os items em
+// que o retorno da função for verdadeiro.
+// o filtro recebe uma função, que recebe cada valor do array.
+// o método includes é um metodo de string, que retorna verdadeiro, caso contem aquela string.
+const precosFiltro = precos.filter((p) => p.includes('R$'));
+console.log('array Filtrado: ', precosFiltro);
+
+// Retorna uma nova array, modificada com o
+// retorno de cada item da função
+// Map recebe uma função, e retorna um novo array.
+// Raplace troca oque foi informado, por um valor.
+// Number transforma valor em numero.
+const precoNumeros = precosFiltro.map((preco) =>
+  Number(preco.replace('R$ ', '')),
+);
+console.log('Transforma valores em numeros: ', precoNumeros);
+
+/*___________________________________*/
+console.log('');
+console.log('6° Conceito: expressão');
+console.log('');
+
+// as vezes no React só poder usar expressão, principalmente no JSX.
+// A expressão x >x?'..':'..' subistitui o if e else.
+const grupoA = 100;
+const grupoB = 300;
+const vencedor = grupoA > grupoB ? 'Grupo A Venceu' : 'Grupo B Venceu';
+console.log('Vencedor: ', vencedor);
+
+//
+const numeros3 = [2, 3, 4, 5, 6];
+const total = numeros3.filter((numero) => numero > 4);
+
+//
+const active = true;
+const button = active && 'Botão está ativo';
+console.log('Botão: ', button);
