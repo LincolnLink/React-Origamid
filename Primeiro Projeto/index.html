@@ -120,13 +120,30 @@
 
     //Hooks
 
+    const Compras = () => {
+
+
+      const [contador, setContador] = React.useState(0);
+      function comprar() {
+        setContador(contador + 1);
+      }
+
+
+      return (
+        <div>
+          <p>Total: {contador}</p>
+          <p>Preço: R$ {contador * 250}</p>
+          <button onClick={comprar}>Comprar</button>
+        </div>
+      )
+    };
 
 
     const Main3 = () => {
       return <div>
 
-        <h3>React Evento</h3>
-        <Produtos />
+        <h3>React Hook</h3>
+        <Compras />
 
       </div>
     }
