@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primeiro Projeto React</title>
+
+  <!-- Adicionar o React. -->
+  <!-- Nota: ao fazer o deploy, substitua "development.js" por "production.min.js". -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin>
+  </script>
+
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin>
+  </script>
+
+  <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="app">
+    App
+  </div>
+  <br />
+  <br />
+
+  <div id="appEvent">
+    App
+  </div>
+  <br />
+  <br />
+
+  <div id="appHook">
+    App
+  </div>
+  <br />
+  <br />
+
+
+  <script type="text/babel">
+
+    function AppComponent() {
+      return <div> Meu App component</div>
+    }
+
+    // Conceitos basicos
+    function App1() {
+      return <div id="container">Meu App1</div>
+    }
+
+    // O babel transforma por de baixo dos panos.
+    // function App ( ){
+    // return React.createElement('div', { id: 'container' }, 'Meu App2')
+    // }
+
+
+    // Usando classe para criar component.
+    // Criando um component buuton.
+    class Button extends React.Component {
+      render() {
+
+        function hanfleClick2(event) {
+          console.log(event.target.innerText);
+        }
+
+        return <button onClick={hanfleClick2} className="btn">Comprar Agora</button>
+      };
+    }
+
+    // Component Titulo
+    const Titulo = () => {
+      const numero = Math.random() * 1000;
+
+      return <h1>Meu Titulo {numero}</h1>
+    }
+
+    // arrowFunction
+    const Main1 = () => {
+      return <div>
+
+        <h3>React Component</h3>
+        <Titulo />
+        <br />
+        <Button />
+        <br />
+        <div>
+          compre aqui também.(reultilizando o botão)
+          <Button />
+        </div>
+      </div>
+    }
+
+
+    // Evento
+    const Produtos = () => {
+      function handleClick(event) {
+        alert('Comprou: ' + event.target.innerText);
+      }
+
+      return (
+        <div>
+          <button onClick={handleClick}>Camisa</button>
+          <button onClick={handleClick}>Bermuda</button>
+        </div>
+      );
+    };
+
+
+    const Main2 = () => {
+      return <div>
+
+        <h3>React Evento</h3>
+        <Produtos />
+
+      </div>
+    }
+
+    //Hooks
+
+
+
+    const Main3 = () => {
+      return <div>
+
+        <h3>React Evento</h3>
+        <Produtos />
+
+      </div>
+    }
+
+
+
+    ReactDOM.render(<Main1 />, document.getElementById('app'));
+
+    ReactDOM.render(<Main2 />, document.getElementById('appEvent'));
+
+    ReactDOM.render(<Main3 />, document.getElementById('appHook'));
+
+
+  </script>
+
+</body>
+
+</html>
