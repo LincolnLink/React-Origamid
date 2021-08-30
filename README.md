@@ -814,11 +814,118 @@
 
 </blockquete>
 
+# Teste de Hook
+
+- O "StrictMode" duplica as chamada, para evitar que aconteça um efeito colateral.
+
+- O que causa efeito colateral é por uma chamada de uma função, dentro de outra função.
+
+# useEffect
+
+- Ciclo de vida do component:
+
+  - Momento que ele é renderizado na tela primeiramente.
+
+  - Momento que ele é atualizado, por exemplo usando "set" função
+    atualizadora.
+
+  - Momento que o component some da tela, caso tenha um botão
+    que ativa e desative.
+
+- O useEffect: é usando para ativar codigos dependendo do ciclo
+  de vida do component.
+
+  - É bom por um array como segundo parametro.
+
+  - Essa array é um "array de dependencia".
+
+  - Se o estado do item colocado no array mudar, o useEffect irar executar novamente.
+  - Se não mudar, não executa novamente.
+
+  - Pode ter mais de um useEffect.
+  - Caso não bote o estado no array de dependencia, e tenha algum
+    codigo dentro do useEffect, ele irar informar, que ele não será
+    executado.
+
+    - Ou informe o estado para o array de dependencia, ou remove o array de dependencia.
+
+    - useEffect sabe diferenciar uma constante estatica de um valor de estado.
+
+- Comandos:
+
+  - Para executar uma unica vez: Deve por a função em uma useEffect(), e depois por um array vazio, como segundo parametro.
+
+  - Para executar quando um useState mudar: Deve por a função em um useEffect(), com array vazio, e ir mudando pelo "set".
+
+  - Para ter varios efeitos independente: duplica o useEffect, e bota o valor do useStatus no array de dependecia.
+
+  - Exemplo: mudar titulo e resetar o contar:
+
+  </blockquete>
+
+        const [contar, setContar] = useStatus(0);
+        const [modal, setModal] = useStatus(false);
+
+        useEffect(()=>{
+          documento.title = 'Total' + contar;
+        }. [contar]);
+
+        useEffect(()=>{
+        setContar(0);
+        }. [modal]);
+
+  <blockquete>
+
+- Efeito antes de desmontar: caos um elemento que sai da tela, Antes de Desmontar
+  As vezes precisamos executar um efeito sempre que um componente for desmontado. Para isso utilizamos um callback no retorno do callback do efeito.
+
+  </blockquete>
+
+        const Produto = () => {
+        // Utilizamos o useEffect para adicionarmos eventos direto ao DOM
+        React.useEffect(() => {
+          function handleScroll(event) {
+            console.log(event);
+          }
+          window.addEventListener('scroll', handleScroll);
+          // Limpa o evento quando o elemento é removido do DOM.
+          return () => {
+            window.removeEventListener('scroll', handleScroll);
+          };
+        }, []);
+
+        return <p style={{ height: '200vh' }}>Produto</p>;
+      };
+
+  <blockquete>
+  <blockquete>
+
+        const DesmontarUseEffect = () => {
+        const [ativo, setAtivo] = React.useState(false);
+
+        return (
+          <div>
+            <p>Meu App</p>
+            <button onClick={() => setAtivo(!ativo)}>Abrir</button>
+            {ativo && <Produto />}
+          </div>
+          );
+        };
+
+  </blockquete>
+
+### OBS: sempre use um ternario para exibir dados!
+
 <blockquete>
 
-</blockquete>
+          <div>
+          {dados && (
+            <div>
+              <h1>{dados.nome}</h1>
+            </div>
+          )}
 
-<blockquete>
+</div>
 
 </blockquete>
 
