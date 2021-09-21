@@ -918,24 +918,79 @@
 
 <blockquete>
 
+    <div>
+        {dados && (
           <div>
-          {dados && (
-            <div>
-              <h1>{dados.nome}</h1>
-            </div>
-          )}
+            <h1>{dados.nome}</h1>
+          </div>
+        )}
 
-</div>
+    </div>
+
+</blockquete>
+
+# useRef
+
+- Retorna um objeto com a propriedade current. Esse objeto pode ser utilizado para guardarmos valores que irão persistir durante todo o ciclo de vida do elemento. Geralmente usamos o mesmo para nos referirmos a um elemento do DOM, sem precisarmos utilizar o querySelector ou similar.
+
+-OBS:
+
+1° Deve declarar uma const recebendo o "React.useRef()".
+2° Essa consta faz referencia a algum DOM.
+3° Pode usar a propriedade current para recuperar a referencia do DOM.
+
+<blockquete>
+
+    const video = React.useRef();
+
+    React.useEffect(() => {
+      console.log(video.current);
+    }, []);
+
+    return <video ref={video}></video>;
 
 </blockquete>
 
 <blockquete>
 
+    export const UseRefComponent2 = () => {
+      const [comentarios, setComentarios] = useState([]);
+      const [input, setInput] = useState('');
+      const inputElement = React.useRef();
+
+      React.useEffect(() => {}, []);
+
+      // Pega o novo comentario e adiciona na lista de comentario.
+      function handleClick() {
+        //Uma forma diferente de adicionar item no array!
+        setComentarios([...comentarios, input]);
+        setInput('');
+        inputElement.current.focus();
+      }
+
+      return (
+        <>
+          <ul>
+            {comentarios.map((com) => (
+              <li key={com}>{com}</li>
+            ))}
+          </ul>
+
+          <input
+            type="text"
+            ref={inputElement}
+            value={input}
+            onChange={({ target }) => setInput(target.value)}
+          />
+          <br />
+          <button onClick={handleClick}>Enviar</button>
+        </>
+      );
+    };
+
 </blockquete>
 
-<blockquete>
-
-</blockquete>
+-
 
 <blockquete>
 

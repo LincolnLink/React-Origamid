@@ -7,6 +7,10 @@ import { IndexUseEffect } from './TesteUseEffect/IndexUseEffect';
 import { ComponentUseEffect } from './TesteUseEffect/componentUseEffect';
 import { DesmontarUseEffect } from './DesmontarUseEffect/index';
 
+import { UseRefComponent1 } from './UseRef/index';
+
+import { UseRefComponent2 } from './UseRef2/index';
+
 export const App = () => {
   return (
     <>
@@ -28,6 +32,13 @@ export const App = () => {
       <h1>useEffect Antes de desmontar</h1>
       <br />
       <DesmontarUseEffect />
+      <h1>useRef</h1>
+      <br />
+      <br />
+      <UseRefComponent1 />
+      <br />
+      <br />
+      <UseRefComponent2 />
     </>
   );
 };
