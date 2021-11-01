@@ -14,7 +14,7 @@ export const ComponentUseEffect = () => {
 
   return (
     <div>
-      {dados && (
+      {dados && ( // <-- Bota uma condição porq dados se inicia com Null.
         <div>
           <h4>{dados.nome}</h4>
           <p>R$ {dados.preco * contar}</p>

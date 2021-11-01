@@ -11,6 +11,20 @@
 
 - Exemplos no codigo com comentarios.
 
+# JS para praticar
+
+- Set : Como se fosse um array, mas ele não quarda itens repetidos.
+
+- exemplo:
+
+<blockquete>
+
+    const set1 = new Set();
+
+    set1.add(func1);
+
+</blockquete>
+
 # Iniciando React
 
 - Para adicionar o react deve por os 3 links que faz ele funcionar.
@@ -814,13 +828,132 @@
 
 </blockquete>
 
+# useState
+
+- Estado: O estado de uma aplicação representa as características dela naquele momento. Por exemplo: os dados do usuário foram carregados, o botão está ativo, o usuário está na página de contato e etc.
+
+- Hooks: Os Hooks são funções especiais do React que permitem controlarmos o estado e o ciclo de vida de componentes funcionais. Isso antes só era possível com classes.
+
+- React.useState: O useState é uma função que retorna uma Array com 2 valores. O primeiro valor guarda o dado do estado atual, pode ser qualquer tipo de dado como strings, arrays, números, boolean, null, undefined e objetos. O segundo valor é uma função que pode ser utilizada para modificarmos o estado do primeiro valor.
+
+Quando a função de modificação do estado é ativada, todos os componentes que dependerem do estado, serão renderizados novamente e os seus filhos também. É isso que garante a reatividade de componentes funcionais no React.
+
+- Múltiplos Estados: Não existem limites para o uso do useState, podemos definir diversos no mesmo componente.
+
+- Props: Podemos passar o estado e a função de modificação como propriedades para outros elementos.
+
+<blockquete>
+
+    const App = () => {
+      const [modal, setModal] = React.useState(false);
+
+      return (
+        <div>
+          <Modal modal={modal} setModal={setModal} />
+          <ButtonModal setModal={setModal} />
+        </div>
+      );
+    };
+
+    export default App;
+
+</blockquete>
+
+<blockquete>
+
+    const ButtonModal = ({ setModal }) => {
+      return <button onClick={() => setModal(true)}>Abrir Modal</button>;
+    };
+
+    export default ButtonModal;
+
+</blockquete>
+
+<blockquete>
+
+    const Modal = ({ modal, setModal }) => {
+      if (modal === true)
+        return (
+          <div>
+            Esse é um modal. <button onClick={() => setModal(false)}>Fechar</button>
+          </div>
+        );
+      return null;
+    };
+
+    export default Modal;
+
+</blockquete>
+
+- Reatividade: Não modifique o estado diretamente. Utilize sempre a função de atualização do estado, pois ela que garante a reatividade dos componentes.
+
+<blockquete>
+
+      const App = () => {
+        const [items, setItems] = React.useState(['Item 1', 'Item 2']);
+
+        function handleClick() {
+          // Errado. Modifique o estado apenas com a função de atualização (setItems)
+          items.push('Novo Item');
+        }
+
+        function handleClickReativo() {
+          // Correto. Eu desestruturo a array atual, criando uma nova e adiciono um novo elemento
+          setItems([...items, 'Novo Item']);
+        }
+
+        return (
+          <>
+            {items.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+            <button onClick={handleClick}>Adicionar Item</button>
+            <button onClick={handleClickReativo}>Adicionar Reativo</button>
+          </>
+        );
+      };
+
+</blockquete>
+
+- Callback: Podemos passar uma função de callback para atualizar o estado. A função de callback recebe um parâmetro que representa o valor anterior e irá modificar o estado para o valor que for retonado na função.
+
+Passa o método setModal como parametro para outro component, esse component atualiza o status usando
+o método.
+
+<blockquete>
+
+    const App = () => {
+      const [ativo, setAtivo] = React.useState(true);
+
+      function handleClick() {
+        // usando um callback
+        setAtivo((anterior) => !anterior);
+      }
+
+      return (
+        <button onClick={handleClick}>
+          {ativo ? 'Está Ativo' : 'Está Inativo'}
+        </button>
+      );
+    };
+
+</blockquete>
+
+- React.StrictMode : O modo estrito invoca duas vezes a renderização do componente, quando o estado é atualizado. Assim é possível identificarmos funções com efeitos coláterais (side effects) e eliminarmos as mesmas.
+
+Funções com efeitos coláterais são aquelas que modificam estados que estão fora das mesmas.
+
 # Teste de Hook
 
 - O "StrictMode" duplica as chamada, para evitar que aconteça um efeito colateral.
 
 - O que causa efeito colateral é por uma chamada de uma função, dentro de outra função.
 
+- É sempre bom por os métodos set um abaixo do outro.
+
 # useEffect
+
+- O callback do useEffect é executado depois da renderização inicial.
 
 - Ciclo de vida do component:
 
@@ -850,6 +983,8 @@
     - Ou informe o estado para o array de dependencia, ou remove o array de dependencia.
 
     - useEffect sabe diferenciar uma constante estatica de um valor de estado.
+
+- OBS: O component é uma função em JS, que executa o tempo todo, com useEffect() você pode ter o controle usando [] (o array de dependencia) , que no caso é o segundo parametro, só é executado oque está no useEffect() se o estado que está dentro do array de dependencia mudar, se estiver vazio só vai executar uma unica vez.
 
 - Comandos:
 
@@ -990,19 +1125,202 @@
 
 </blockquete>
 
+OBS: map também tem index, é o segundo parametro do callback do map,
+o index serve como key.
+
+- UseRef, pode ser usado para ser referencia de valores, sem ser reativo, e sim valores que pode ser usado mais tarde, não confunda com variavel, porq variavel perde o valor quando é renderizado novamente quando atualiza a tela, já o ref não perde o valor.
+
+#useMemo
+
+- performance.now(): informa o tempo que foi usado em milesegundos.
+
+- useMemo: Guarda um valor ou calculo e executa apenas uma vez,
+  é bom usar em calculos do JS pesados.
+
+<blockquete>
+
+      import React, { useState } from 'react';
+
+      function operacaoLenta() {
+      let c;
+      for (let i = 0; i < 100000000; i++) {
+      c = i + i / 10;
+      }
+      return c;
+      }
+
+      export const UseMemoTeste = () => {
+      const [contar, setContar] = useState(0);
+
+      const t1 = performance.now();
+      const valor = operacaoLenta();
+      console.log(performance.now() - t1);
+
+      return <button onClick={() => setContar(contar + 1)}>{contar}</button>;
+      };
+
+</blockquete>
+
+- Usando o useMemo, para deixar mais rapido.
+
+<blockquete>
+
+    import React, { useState, useMemo } from 'react';
+
+    function operacaoLenta() {
+    let c;
+    for (let i = 0; i < 100000000; i++) {
+    c = i + i / 10;
+    }
+    return c;
+    }
+
+    export const UseMemoTeste = () => {
+    const [contar, setContar] = useState(0);
+
+    const t1 = performance.now();
+    const valor = useMemo(() => operacaoLenta(), []);
+    //console.log(valor);
+    console.log(performance.now() - t1);
+
+    return <button onClick={() => setContar(contar + 1)}>{contar}</button>;
+
+};
+
+</blockquete>
+
+#useCallback
+
+- Permite definirmos um callback e uma lista de dependências do callback.
+  Esse callback só será recriado se essa lista de dependências for modificada,
+  caso contrário ele não irá recriar o callback.
+
+- Diferente da função que cria no botão, o useCallback constroi apenas uma vez a função
+  na hora.
+
+<blockquete>
+
+      import React, { useState } from 'react';
+
+      export const UseCallback = () => {
+        const [contar, setContar] = useState(0);
+
+        const handleClick = () => {
+        setContar(contar + 1);
+        };
+
+        return (
+        <>
+        <button onClick={handleClick}>{contar}</button>
+        </>
+        );
+      };
+
+</blockquete>
+
+- Como fica usando useCallback.
+
+<blockquete>
+
+      import React, { useState, useCallback } from 'react';
+
+      export const UseCallback = () => {
+        const [contar, setContar] = useState(0);
+
+        const handleClick = useCallback(() => {
+          setContar((contar2) => contar2 + 1);
+        }, []);
+
+        return (
+          <>
+            <h1>useCallback</h1>
+            <button onClick={handleClick}>{contar}</button>
+          </>
+        );
+      };
+
+</blockquete>
+
+- Teste do useCallback
+
+<blockquete>
+
+      import React, { useState, useCallback } from 'react';
+
+      const set1 = new Set();
+      const set2 = new Set();
+
+      export const Usecallbacktestefilho = () => {
+      const func1 = () => {
+      console.log('Teste');
+      };
+
+      const func2 = useCallback(() => {
+      console.log('Teste - com useCallback');
+      }, []);
+
+      set1.add(func1);
+      set2.add(func2);
+
+      console.log('Set1:', set1);
+      console.log('Set2 - useCallback:', set2);
+      console.log('------');
+
+      return (
+      <div>
+      <h4>Filho:</h4>
+      <p onClick={func1}>Produto 1</p>
+      <p onClick={func2}>Produto 2</p>
+      </div>
+      );
+      };
+
+      export const Usecallbacktestepai = () => {
+      const [contar, setContar] = useState(0);
+
+      return (
+      <div>
+      <h1>Teste do callback: Mostra que não muda o desenpenho</h1>
+      <Usecallbacktestefilho />
+      <h4>Pai</h4>
+      <button onClick={() => setContar(contar + 1)}>{contar}</button>
+      </div>
+      );
+      };
+
+</blockquete>
+
+#UseContext
+
 -
 
 <blockquete>
 
 </blockquete>
 
-<blockquete>
-
-</blockquete>
+-
 
 <blockquete>
 
 </blockquete>
+
+-
+
+<blockquete>
+
+</blockquete>
+
+-
+
+<blockquete>
+
+## </blockquete>
+
+<blockquete>
+
+</blockquete>
+
+-
 
 <blockquete>
 

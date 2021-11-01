@@ -11,6 +11,16 @@ import { UseRefComponent1 } from './UseRef/index';
 
 import { UseRefComponent2 } from './UseRef2/index';
 
+import { UseRefComponent3 } from './UseRef3/index';
+
+//import { UseMemoTeste } from './useMemo/index';
+
+import { UseCallback } from './useCallback/index';
+
+//import { Usecallbacktestepai } from './useCallbackTeste/index';
+
+import { UseContext } from './useContext/index';
+
 export const App = () => {
   return (
     <>
@@ -39,6 +49,24 @@ export const App = () => {
       <br />
       <br />
       <UseRefComponent2 />
+      <br />
+      <br />
+      <UseRefComponent3 />
+
+      <br />
+      <br />
+      {/* <UseMemoTeste /> */}
+      <br />
+      <br />
+      <UseCallback />
+      <br />
+      <br />
+      {/* <Usecallbacktestepai /> */}
+      <br />
+      <br />
+      <UseContext />
+      <br />
+      <br />
     </>
   );
 };
