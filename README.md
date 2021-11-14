@@ -13,7 +13,7 @@
 
 # JS para praticar
 
-- Set : Como se fosse um array, mas ele não quarda itens repetidos.
+- Set : Como se fosse um array, mas ele não guarda itens repetidos.
 
 - exemplo:
 
@@ -25,7 +25,18 @@
 
 </blockquete>
 
-# Iniciando React
+
+# Comandos basicos
+
+ - Criando um projeto do zero
+
+ <blockquote>
+
+   npx create-react-app my-app
+
+ </blockquote>
+
+# Estudo dos principais arquivos
 
 - Para adicionar o react deve por os 3 links que faz ele funcionar.
 
