@@ -25,14 +25,13 @@
 
 </blockquete>
 
-
 # Comandos basicos
 
- - Criando um projeto do zero
+- Criando um projeto do zero
 
  <blockquote>
 
-   npx create-react-app my-app
+npx create-react-app my-app
 
  </blockquote>
 
@@ -1303,6 +1302,306 @@ o index serve como key.
 
 #UseContext
 
+- Uma forma de passar dados de um component para o outro, de forma mais dinamica,
+  sem usar o props.
+
+- Primeiro deve criar um component ~GlobalContext~ que vai ter o createContex() !
+
+- Nele vai ter toda a regra dos dados que vai ser passado.
+
+<blockquete>
+
+    import React from 'react';
+
+    export const GlobalContext = React.createContext();
+
+    //Provider
+    export const GlobalStorage = ({ children }) => {
+      const [dados, setDados] = React.useState(null);
+
+      //Buscando os produtos
+      React.useEffect(() => {
+        fetch('https://ranekapi.origamid.dev/json/api/produto/')
+          .then((response) => response.json())
+          .then((json) => setDados(json));
+      }, []);
+
+      function limparDados() {
+        setDados(null);
+      }
+
+      return (
+        <GlobalContext.Provider value={{ dados, limparDados }}>
+          {children}
+        </GlobalContext.Provider>
+      );
+    };
+
+</blockquete>
+ 
+- Depois cria o component filho, que vai receber os dados, nesse caso foi criado o component produto e limpar.
+
+- produto recebe os dados e limpar recebe um botao que limpa os dados.
+
+<blockquete>
+
+    import React from 'react';
+    import { GlobalContext } from '../../src/GlobalContext/index';
+
+    const Produto = () => {
+      const { dados } = React.useContext(GlobalContext);
+      //debugger;
+
+      if (dados === null) return null;
+
+      return (
+        <div>
+          <ul>
+            Produto:{''}
+            {dados.map((produto) => (
+              <li key={produto.id}>{produto.nome}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    };
+
+    export default Produto;
+
+</blockquete>
+
+- component limpar
+
+<blockquete>
+
+    import React from 'react';
+    import { GlobalContext } from '../GlobalContext';
+
+    const Limpar = () => {
+      const { limparDados } = React.useContext(GlobalContext);
+      return <button onClick={limparDados}>Limpar</button>;
+    };
+
+    export default Limpar;
+
+</blockquete>
+
+- No component APP, deve ser chamado os component, botando o filho dentro do pai.
+
+<blockquete>
+
+    import './App.css';
+    import { GlobalStorage } from './GlobalContext/index';
+    import Produto from './Produto/index';
+    import Limpar from './Limpar';
+
+    function App() {
+      return (
+        <div className="App">
+          <GlobalStorage>
+            <Produto />
+            <Limpar />
+          </GlobalStorage>
+        </div>
+      );
+    }
+
+    export default App;
+
+</blockquete>
+
+# Custom Hooks
+
+- Como criar um hook personalizado, ele retorna um array de valores, e não retorna elementos.
+
+- [cuidado] No localStorage so se salva string!
+
+- Vai ser criado um hook personalizado para guardar valores no localStorage!.
+
+- O valor iniciar, é definido com uma verificação, se existe o valor no localStorage ou não.
+
+- Cria um efeito para quando valor for modificado, trocar o valor no useState.
+
+<blockquete>
+
+    import React, { useState } from 'react';
+
+    const useLocalStorage = (key, inicial) => {
+      const [state, setState] = useState(() => {
+        const local = window.localStorage.getItem(key);
+
+        return local ? local : inicial;
+      });
+
+
+      useEffect(() => {
+        window.localStorage.setItem(key, state);
+      }, [state, key]);
+
+      return [state, setState];
+    };
+    export default useLocalStorage;
+
+</blockquete>
+
+- Usando o "useLocalStorage"!
+
+<blockquete>
+
+    import './App.css';
+    import React from 'react';
+    import useLocalStorage from './useLocalStorage';
+
+    function App() {
+      const [produto, setProduto] = useLocalStorage('produto', '');
+
+      function handleClick({ target }) {
+        setProduto(target.innerText);
+      }
+
+      return (
+        <div>
+          <p>Produto preferido: {produto}</p>
+          <button onClick={handleClick}>notebook</button>
+          <button onClick={handleClick}>smartphone</button>
+        </div>
+      );
+    }
+
+    export default App;
+
+</blockquete>
+
+- OBS: Para tratar erro de funções asyncornas, se usa TRY E CATCH.
+
+- É possivel descontruir request asyncrinas, porem antes deve ser definido.
+
+# Custom Hooks 2
+
+- Criando um hook personalizado que faz request no banco.
+
+<blockquete>
+
+      import React, { useState } from 'react';
+
+      const useFetch = () => {
+        const [data, setData] = useState(null);
+        const [error, setError] = useState(null);
+        const [loading, setLoading] = useState(null);
+
+        // criar uma função para poder usar na hora que quiser!
+        // O uso perfeito do "useCallback"
+        const request = React.useCallback(async (url, options) => {
+          let response;
+          let json;
+          try {
+            setError(null);
+            setLoading(true);
+            response = await fetch(url, options);
+            json = await response.json();
+            //TODO - explica depois como se trata um retorno errado.
+            setLoading(false);
+          } catch (erro) {
+            json = null;
+            setError('erro');
+          } finally {
+            setData(json);
+            setLoading(false);
+
+            //retorna para o component ter acesso
+            return { response, json };
+          }
+        }, []);
+
+        // Retorna como objeto para não precisar desestruturar
+        // e pode pegar na orem que desejar.
+        return { data, error, loading, request };
+      };
+      export default useFetch;
+
+</blockquete>
+
+- Como o hook personalizado que faz request é chamado.
+
+<blockquete>
+
+    import './App.css';
+    import React, { useEffect } from 'react';
+    import useLocalStorage from './useLocalStorage';
+    import useFetch from './useFetch';
+
+    function App() {
+      const [produto, setProduto] = useLocalStorage('produto', '');
+      const { request, data, loading, error } = useFetch();
+
+      useEffect(() => {
+        async function fetchData() {
+          const { response, json } = await request(
+            'https://ranekapi.origamid.dev/json/api/produto',
+          );
+          console.log(response, json);
+        }
+        fetchData();
+      }, [request]);
+
+      function handleClick({ target }) {
+        setProduto(target.innerText);
+      }
+      if (error) return <p>{error}</p>;
+      if (loading) return <p>Carregando...</p>;
+      if (data)
+        return (
+          <div>
+            <p>Produto preferido: {produto}</p>
+            <button onClick={handleClick}>notebook</button>
+            <button onClick={handleClick}>smartphone</button>
+            <br />
+
+            {data.map((produto) => (
+              <div key={produto.id}>
+                <h1>{produto.nome}</h1>
+              </div>
+            ))}
+          </div>
+        );
+      else return null;
+    }
+
+    export default App;
+
+</blockquete>
+
+# Regras - codigo que retorna erros.
+
+- useEffect não pode ser usado dentro de uma confição.
+
+- Não pode usar o useEffect dentro de uma função.
+
+- Não pode usar useEffect dentro de um For ou algum loop.
+
+- Só pode usar hook dentro de component ou customHook.
+
+- Pode transformar uma função em customHook apenas botando
+  o termo "use" na frente do nome da funcao!
+
+#
+
+<blockquete>
+
+</blockquete>
+
+-
+
+<blockquete>
+
+</blockquete>
+
+-
+
+<blockquete>
+
+</blockquete>
+
 -
 
 <blockquete>
@@ -1325,7 +1624,21 @@ o index serve como key.
 
 <blockquete>
 
-## </blockquete>
+</blockquete>
+
+-
+
+<blockquete>
+
+</blockquete>
+
+-
+
+<blockquete>
+
+</blockquete>
+
+-
 
 <blockquete>
 
