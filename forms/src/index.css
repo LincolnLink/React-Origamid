@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.btnEnviar {
+  margin: 1em;
+  background-color: #0071bb;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+  padding: 1em;
+  font-size: 14px;
+}

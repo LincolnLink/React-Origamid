@@ -1,49 +1,18 @@
 import React, { useState } from 'react';
+import Input01 from './input01';
+import Input02 from './input02';
+import Input03 from './input03-outros';
+import FormComponent01 from './formComponent01';
 
 function App() {
-  // const [nome, setNome] = useState('');
-  const [form, setForm] = useState({
-    nome: '',
-    email: '',
-  });
-
-  //
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log(event);
-  }
-
-  // Desestrutura os valores anteriores e passa os valores novos.
-  // Precisa informar o id alem do value.
-  function handleChange({ target }) {
-    const { id, value } = target;
-    setForm({ ...form, [id]: value });
-  }
-
+  <h1>Aula de forms</h1>;
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="nome">Nome</label>
-      <input
-        id="nome"
-        type="text"
-        name="nome"
-        value={form.nome}
-        onChange={handleChange}
-        //onChange={(event) => setNome(event.target.value)}
-      />
-      {form.nome}
-      <label htmlFor="email">Email</label>
-      <input
-        id="email"
-        type="text"
-        name="email"
-        value={form.email}
-        onChange={handleChange}
-        //onChange={(event) => setEmail(event.target.value)}
-      />
-      {form.email}
-      <button>Enviar</button>
-    </form>
+    <>
+      <Input01></Input01>
+      <Input02></Input02>
+      <Input03></Input03>
+      <FormComponent01></FormComponent01>
+    </>
   );
 }
 

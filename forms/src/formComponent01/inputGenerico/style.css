@@ -1,0 +1,8 @@
+input {
+  margin: 1em;
+  border-radius: 1px solid black;
+}
+
+label {
+  margin-left: 1em;
+}

@@ -1586,6 +1586,10 @@ o index serve como key.
 
 # Form
 
+### Input
+
+- preventDefault() irá prevenir o comportamento padrão, que seria de atualizar a página, enviando uma requisição para o que estiver em
+
 - Não precisa por o evento de submit dentro do botão, ele pode ficar no formulario.
 
 - Para multiplos campos, existe 2 formas.
@@ -1654,37 +1658,248 @@ o index serve como key.
 
 </blockquete>
 
--
+- Uma forma de deixar o formulario generico.
+
+- Cria um array de objetos, botando o id, label e type.
+
+- Use reduce quando for declarar o useState.
 
 <blockquete>
 
+            const [form, setForm] = React.useState(
+              formFields.reduce((acc, field) => {
+                return { ...acc, [field.id]: '' };
+              }, {}),
+            );
+
 </blockquete>
 
--
+- Use um map no array, para gerar varios input de forma dinamica.
 
 <blockquete>
 
-</blockquete>
+            <form onSubmit={handleSubmit}>
+                {formFields.map(({ id, label, type }) => (
+                  <div key={id}>
+                    <label htmlFor={id}>{label}</label>
+                    <input
+                      type={type}
+                      id={id}
+                      value={form[id]}
+                      onChange={handleChange}
+                    />
+                  </div>
+                ))}
+                <button>Enviar</button>
+                {response && response.ok && <p>Usuário Criado</p>}
+            </form>
 
--
+</blockquete>
 
 <blockquete>
 
+            import React, { useState } from 'react';
+
+            const formFields = [
+              {
+                id: 'nome',
+                label: 'Nome',
+                type: 'text',
+              },
+              {
+                id: 'email',
+                label: 'Email',
+                type: 'email',
+              },
+              {
+                id: 'senha',
+                label: 'Senha',
+                type: 'password',
+              },
+              {
+                id: 'cep',
+                label: 'Cep',
+                type: 'text',
+              },
+              {
+                id: 'rua',
+                label: 'Rua',
+                type: 'text',
+              },
+              {
+                id: 'numero',
+                label: 'Numero',
+                type: 'text',
+              },
+              {
+                id: 'bairro',
+                label: 'Bairro',
+                type: 'text',
+              },
+              {
+                id: 'cidade',
+                label: 'Cidade',
+                type: 'text',
+              },
+              {
+                id: 'estado',
+                label: 'Estado',
+                type: 'text',
+              },
+            ];
+
+            function Input02() {
+              const [form, setForm] = React.useState(
+                formFields.reduce((acc, field) => {
+                  return { ...acc, [field.id]: '' };
+                }, {}),
+              );
+
+              const [response, setResponse] = useState(null);
+
+              function handleSubmit(event) {
+                //??
+                event.preventDefault();
+                fetch('https://ranekapi.origamid.dev/json/api/usuario', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  //converte para JSON
+                  body: JSON.stringify(form),
+                }).then((response) => {
+                  setResponse(response);
+                });
+              }
+
+              function handleChange({ target }) {
+                const { id, value } = target;
+                setForm({ ...form, [id]: value });
+              }
+              return (
+                <>
+                  <p>Input - conceitos basicos - parte 2</p>
+                  <form onSubmit={handleSubmit}>
+                    {formFields.map(({ id, label, type }) => (
+                      <div key={id}>
+                        <label htmlFor={id}>{label}</label>
+                        <input
+                          type={type}
+                          id={id}
+                          value={form[id]}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    ))}
+                    <button>Enviar</button>
+                    {response && response.ok && <p>Usuário Criado</p>}
+                  </form>
+                </>
+              );
+            }
+
+            export default Input02;
+
 </blockquete>
 
--
+### TextArea
+
+- Não precisa fechar
 
 <blockquete>
 
+            <textarea value={textarea}> onChange={({tareget})=>setTextearea(target.value)}
+            rowns="5" />
+
 </blockquete>
 
--
+### Select
+
+- Uma forma de criar um select, com a primeira opção vazia
 
 <blockquete>
 
+      <select value={select} onChange={({ target }) => setSelect(target.value)}>
+              <option value="" disabled>
+                Selecione
+              </option>
+              <option value="notebook">Notebook</option>
+              <option value="smartphone">Smartphone</option>
+              <option value="tablet">Tablet</option>
+            </select>
+            <p>{select}</p>
+
 </blockquete>
 
--
+### RaioButtom
+
+- Pode ser usado o checked ou o name para verificar.
+- https://www.origamid.com/slide/react-completo/#/0404-radio/3
+
+<blockquete>
+
+        <h2>Cor</h2>
+              <label>
+                <input
+                  type="radio"
+                  value="azul"
+                  checked={cor === 'azul'}
+                  onChange={({ target }) => setCor(target.value)}
+                />
+                Azul
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="vermelho"
+                  checked={cor === 'vermelho'}
+                  onChange={({ target }) => setCor(target.value)}
+                />
+                Vermelho
+              </label>
+
+</blockquete>
+
+### Checkbox
+
+- exemplo de apenas um selecionado e de multiplos
+
+- https://www.origamid.com/slide/react-completo/#/0405-checkbox/1
+
+- praticar mais em casos reais.
+
+# Conceito de component generico
+
+### componet generico input
+
+- nomes de valores iguais as propriedade, pode desestruturar.
+
+- component input generico
+
+<blockquete>
+
+        const InputGenerico = ({ id, label, setValue, value, ...props }) => {
+          return (
+            <div>
+              <label htmlFor={id}>{label}</label>
+              <input
+                type="text"
+                id={id}
+                name={id}
+                value={value}
+                onChange={({ target }) => setValue(target.value)}
+                {...props}
+              />
+              <br />
+            </div>
+          );
+        };
+
+        export default InputGenerico;
+
+</blockquete>
+
+### component generico select
 
 <blockquete>
 
