@@ -25,7 +25,7 @@ function Input01() {
       <p>Input - conceitos basicos</p>
       <label htmlFor="nome">Nome</label>
       <input
-        id="nome"
+        id="nome01"
         type="text"
         name="nome"
         value={form.nome}
@@ -36,7 +36,7 @@ function Input01() {
       <br />
       <label htmlFor="email">Email</label>
       <input
-        id="email"
+        id="email01"
         type="text"
         name="email"
         value={form.email}

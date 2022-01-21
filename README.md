@@ -1901,13 +1901,79 @@ o index serve como key.
 
 ### component generico select
 
+- Quem realmente inicia o valor do select é a propriedade "value" .
+
+- Passa as propriedade do useState para o select ficar reativo, value com value, e setValue com o onChance passando o target desestruturado.
+
+- exemplo:
+
 <blockquete>
+
+          import React, { useState } from 'react';
+          import './style.css';
+
+          const SelectGenerico = ({ label, options, value, setValue, ...props }) => {
+            return (
+              <div>
+                <label>{label}</label>
+
+                <select
+                  value={value}
+                  onChange={({ target }) => setValue(target.value)}
+                  {...props}
+                >
+                  <option value="" disabled>
+                    Selecione
+                  </option>
+
+                  {options.map((op) => (
+                    <option key={op} value={op}>
+                      {op}
+                    </option>
+                  ))}
+                </select>
+
+                <br />
+              </div>
+            );
+          };
+
+          export default SelectGenerico;
 
 </blockquete>
 
--
+### component generico Radio
+
+- A reatividade do radio, está vinculado com o checkd,
+  se ele está checado ou não.
 
 <blockquete>
+
+          import React, { useState } from 'react';
+          //import './style.css';
+
+          const RadioGenerico = ({ options, value, label, setValue, ...props }) => {
+            return (
+              <>
+                <h5>{label}</h5>
+                {options.map((option) => (
+                  <label key={option}>
+                    <br />
+                    <input
+                      type="radio"
+                      value={option}
+                      checked={value == option}
+                      onChange={({ target }) => setValue(target.value)}
+                      {...props}
+                    />
+                    {option}
+                  </label>
+                ))}
+              </>
+            );
+          };
+
+          export default RadioGenerico;
 
 </blockquete>
 
