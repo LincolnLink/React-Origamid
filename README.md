@@ -1977,13 +1977,59 @@ o index serve como key.
 
 </blockquete>
 
--
+### component generico Checkbox
+
+- Exemplo
 
 <blockquete>
 
+            import React from 'react';
+            //import './style.css';
+
+            const CheckBoxGenerico = ({ options, setValue, value }) => {
+              //id, label, setValue, value, ...props
+
+              function handleChange({ target }) {
+                if (target.checked) {
+                  setValue([...value, target.value]);
+                } else {
+                  setValue(value.filter((itemValue) => itemValue !== target.value));
+                }
+              }
+
+              return (
+                <div>
+                  {options.map((option) => (
+                    <label key={option}>
+                      <input
+                        type="checkbox"
+                        value={option}
+                        checked={value.includes(option)}
+                        onChange={handleChange}
+                      />
+                      {option}
+                    </label>
+                  ))}
+                </div>
+              );
+            };
+
+            export default CheckBoxGenerico;
+
 </blockquete>
 
--
+### Validação
+
+- o Onchange foi definido do lado de fora/ dolado do pai, porq
+  foi mostrata uma validação de dados no pai, esse exemplo é provisorio.
+
+- proxima aula, vai ser definido o onchangem dentro do filho/ dolado de
+  dentro, usando um hook.
+
+- 3 Momentos da validação, quando perde o foco, quando muda o valor,
+  e quando envia.
+
+### Validação usando hook !
 
 <blockquete>
 

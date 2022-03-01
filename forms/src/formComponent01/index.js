@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CheckBoxGenerico from './checkBoxGenerico';
 import InputGenerico from './inputGenerico';
 import RadioGenerico from './radioGenerico';
 import SelectGenerico from './selectGenerico';
@@ -10,6 +11,12 @@ function FormComponent01() {
   const [produto02, setProduto02] = useState('');
   const [radio01, setRadio01] = useState('Azul');
   const [radio02, setRadio02] = useState('Azul');
+  const [linguagens, setLinguagens] = useState([]);
+  const [termos, setTermos] = useState([]);
+
+  if (termos.length > 0) {
+    console.log('enviar');
+  }
 
   return (
     <>
@@ -62,6 +69,24 @@ function FormComponent01() {
           value={radio02}
           setValue={setRadio02}
         />
+        <br />
+        <br />
+        <h5>Linguagens</h5>
+        <CheckBoxGenerico
+          value={linguagens}
+          setValue={setLinguagens}
+          options={['JS', 'PHP', 'Ruby']}
+        />
+
+        <br />
+        <br />
+        <h5>Termos</h5>
+        <CheckBoxGenerico
+          value={termos}
+          setValue={setTermos}
+          options={['Li e aceito os termos.']}
+        />
+
         <br />
         <br />
         <button className="btnEnviar">Enviar</button>
