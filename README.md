@@ -2029,7 +2029,28 @@ o index serve como key.
 - 3 Momentos da validação, quando perde o foco, quando muda o valor,
   e quando envia.
 
-### Validação usando hook !
+### Validação usando hook(validação dinamica) !
+
+- Criado um Hook do zero para validar.
+
+- No hook não retorna elemento, retorna partes
+  especificas que for preciso.
+
+- A const Types é um objeto, que tem dentro dela
+  uma "lista" de objetos, com essa const, vocÊ tem acesso
+  a outros objetos que serve para tipar, tornando o hook/
+  função dinamica, aonde é passado apenas o nome do objeto,
+  com esse nome ele tem diferentes calculos/funções.
+
+- Pode buscar um regex da internet para validar por exemplo email.
+
+- Criando um formulario sem a validação.
+
+### Desafio Formulários
+
+-
+
+-
 
 <blockquete>
 

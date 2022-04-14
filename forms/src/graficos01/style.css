@@ -1,0 +1,10 @@
+.body {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.body .exemplo {
+  width: 600px;
+}

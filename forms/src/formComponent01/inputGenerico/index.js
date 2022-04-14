@@ -1,19 +1,31 @@
 import React from 'react';
 import './style.css';
 
-const InputGenerico = ({ id, label, setValue, onChange, value, ...props }) => {
+const InputGenerico = ({
+  id,
+  label,
+  onChange,
+  value,
+  type,
+  onBlur,
+  placeholder,
+  error,
+}) => {
   return (
     <div>
       <label htmlFor={id}>{label}</label>
       <input
-        type="text"
         id={id}
         name={id}
-        value={value}
-        //onChange={({ target }) => setValue(target.value)}
-        {...props}
         onChange={onChange}
+        placeholder={placeholder}
+        onBlur={onBlur}
+        type={type}
+        value={value}
+
+        //onChange={({ target }) => setValue(target.value)}
       />
+      {error && <p>{error}</p>}
       <br />
     </div>
   );
