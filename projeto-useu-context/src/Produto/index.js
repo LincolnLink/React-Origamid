@@ -3,7 +3,7 @@ import { GlobalContext } from '../../src/GlobalContext/index';
 
 const Produto = () => {
   const { dados } = React.useContext(GlobalContext);
-  //debugger;
+  debugger;
 
   if (dados === null) return null;
 
