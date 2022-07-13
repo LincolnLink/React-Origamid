@@ -16,9 +16,36 @@
 
 - Novas tag "Routes" e "Route" é usado para gerenciar cada rota.
 
+
+### Rotas alinhadas
+
 - Um "Route" dentro do outro, siginifica que um é pai, e o outro são os filhos, que são os layouts que fica dentro do layout pai.
 
+
+### Lista de faturas
+
+- Carregando uma lista de objetos, arquivo data.js mostra um exemplo.
+
+
+### Adicionando rotas sem correspondente(tratamento de erro)
+
 - O "*"tem um significado especial aqui. Ele corresponderá apenas quando nenhuma outra rota corresponder.
+
+<blockquete>
+
+        <Route
+            path="*"
+            element={
+                <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+                </main>
+            }
+        />
+
+</blockquete>
+
+
+### Lendo parametro de URL
 
 - Uma forma de pegar o id, é alinhando as rotas, exemplo:
 
@@ -39,7 +66,7 @@
 
 ### rotas de índice
 
--
+- 
 
 <blockquete>
 
