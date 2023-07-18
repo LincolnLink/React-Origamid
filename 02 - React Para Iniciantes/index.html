@@ -67,6 +67,7 @@
     
     ReactDOM.render(<App />, document.getElementById('root'));
 
+    // Forma antiga e descontinuada.
     // const container = document.getElementById('root');
     // const root = ReactDOM.createRoot(container);
     // root.render(<App />);
@@ -74,23 +75,8 @@
 
     //------------------------------------------//
 
-    function AppComponent() {
-      return <div> Meu App component</div>
-    }
-
-    // Conceitos basicos
-    function App1() {
-      return <div id="container">Meu App1</div>
-    }
-
-    // O babel transforma por de baixo dos panos.
-    // function App ( ){
-    // return React.createElement('div', { id: 'container' }, 'Meu App2')
-    // }
-
-
-    // Usando classe para criar component.
-    // Criando um component buuton.
+    //Mostrando como por um componente dentro do outro.
+    // Usando classe para criar component.(forma antiga)    
     class Button extends React.Component {
       render() {
 
@@ -101,19 +87,17 @@
         return <button onClick={hanfleClick2} className="btn">Comprar Agora</button>
       };
     }
-
-    // Component Titulo
+    
     const Titulo = () => {
       const numero = Math.random() * 1000;
 
       return <h1>Meu Titulo {numero}</h1>
     }
-
-    // arrowFunction
+    
     const Main1 = () => {
       return <div>
 
-        <h3>React Component</h3>
+        <h3>Componente dentro do outro</h3>
         <Titulo />
         <br />
         <Button />
@@ -140,7 +124,6 @@
       );
     };
 
-
     const Main2 = () => {
       return <div>
 
@@ -150,17 +133,15 @@
       </div>
     }
 
+
     //Hooks
-
     const Compras = () => {
-
 
       const [contador, setContador] = React.useState(0);
       function comprar() {
         setContador(contador + 1);
       }
-
-
+      
       return (
         <div>
           <p>Total: {contador}</p>
@@ -170,7 +151,6 @@
       )
     };
 
-
     const Main3 = () => {
       return <div>
 
@@ -179,7 +159,6 @@
 
       </div>
     }
-
 
 
     ReactDOM.render(<Main1 />, document.getElementById('app'));

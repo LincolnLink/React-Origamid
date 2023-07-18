@@ -43,11 +43,11 @@
 
   </blockquete>
 
-# Comandos basicos (atualizando)
+# Comandos basicos (atualizando: descontinuado)
 
   - Criando um projeto do zero
 
-  - hoje em dia não se usa o comando "npx create-react-app my-app".
+  - hoje em dia não se usa o comando "npx create-react-app my-app", foi descontinuado.
 
   <blockquote>
 
@@ -117,116 +117,17 @@
 
  - O "ReactDOM" usa o método "render" para renderizar o componente principal, no HTML que tem o id "root", isso funciona por causa do Babel.
 
- - Dentro do componente principal é chamado o componente Button01.
+ - Dentro do componente principal é chamado o componente Button01, que é um componente funcional.
 
 # React Para Iniciantes - React Básico.
 
- </blockquete>
-
- - ou pode instalar pelo npm.
-
- <blockquete>
- 
-    npm init -y
-
-    npm install babel-cli@6 babel-preset-react-app@3
-
- </blockquete>
-
- - Para executar o compilador.
-
- <blockquete>
-
-    npx babel --watch src --out-dir . --presets react-app/prod
-
- </blockquete>
-
-### Criando um component simples.
-
-- É preciso de um elemento para o React montar o component nele.
-- Um exemplo de elemento seria uma div com um id.
-
- <blockquete>
-
-    <div id="app">
-      App
-    </div>
-
- </blockquete>
-
-- Cria um script do type "text/babel".
-
-- Dentro dele é possivel criar uma função que vai representar
-  um componet do React, aonde é retornado um html.
-
-- É usado o o método "render" do objeto "ReactDOM", para redeizar
-  o component.
-
-- o primeiro parametro é o component, que é informado em forma de div.
-
-- E o segundo é o local que ele vai está sendo renderizado, é usado
-  o "document.getElementById()", para pegar o local.
-
-    <blockquete>
-
-          <script type="text/babel">
-
-            function AppComponent() {
-              return <div> Meu App</div>
-            }
-
-            ReactDOM.render(<AppComponent />, document.getElementById('app'));
-
-          </script>
-
-    </blockquete>
-
-# Conceitos basicos de React
-
-- Testando a converção do babel nesse site:
+ - Testando a converção do babel nesse site:
 
   https://babeljs.io
 
-- Criando um component
+ ### Colocando um component funcional dentro do outro.
 
-<blockquete>
-
-        function App() {
-          return <div id="container">Meu App2</div>
-        }
-
-</blockquete>
-
-- O Babel transforma por de baixo dos panos.
-
-<blockquete>
-
-        function App ( ){
-
-          return React.createElement('div', { id: 'container' }, 'Meu App2')
-
-        }
-
-</blockquete>
-
-### Criando componente usando classe
-
-- Deve primeiro usar o "extends" na classe.
-- Use o método "render" para poder renderizar o DOM.
-
-<blockquete>
-
-          class Button extends React.Component {
-            render() {
-              return <button className="btn">Comprar Agora</button>
-            };
-          }
-
-</blockquete>
-
-### Colocando um component dentro do outro.
-
-- Apenas chama a tag do componente existente.
+ - Apenas chama a tag do componente existente.
 
 <blockquete>
 
@@ -260,11 +161,11 @@
 
 </blockquete>
 
-### Trabalhando com eventos.
+ ### Trabalhando com eventos.
 
-- Cria um component, dentro dele uma função que recebe evento.
-- Retorna uma div com botão que tem evento de "onClick".
-- E aplica dentro do evento com chaves, o nome da função.
+ - Cria um component, dentro dele uma função que recebe evento.
+ - Retorna uma div com botão que tem evento de "onClick".
+ - E aplica dentro do evento com chaves, o nome da função.
 
 <blockquete>
 
@@ -294,14 +195,14 @@
 
 </blockquete>
 
-### Hooks
+ ### Hooks
 
-- Sempre retorne algo, nem que seja null.
-- Bota os () no returne para poder quebrar linha.
-- Sempre tenha uma div pai para todos os elementos do DOM.
+ - Sempre retorne algo, nem que seja null.
+ - Bota os () no returne para poder quebrar linha.
+ - Sempre tenha uma div pai para todos os elementos do DOM.
 
-- Tem que por a função "setContador" dentro de outra função, se não gera um loot infinito.
-- é preciso desestruturar o React.useState(0), para manipular os valores dele.
+ - Tem que por a função "setContador" dentro de outra função, se não gera um loot infinito.
+ - é preciso desestruturar o React.useState(0), para manipular os valores dele.
 
 <blockquete>
 
@@ -334,9 +235,9 @@
 
 </blockquete>
 
-# React vs JS puro
+# React Para Iniciantes - React vs JS puro
 
-- JS
+ - JS
 
 <blockquete>
 
@@ -369,7 +270,7 @@
 
 </blockquete>
 
-- React
+ - React
 
 <blockquete>
 
@@ -393,16 +294,16 @@
 
 </blockquete>
 
-# 0204 Webpack e Babel
+# React Para Iniciantes - Ferramentas de Automação
 
-- Nunca que em uma aplicação de produção ira usar link do React nem do Babel.
+ - Nunca que em uma aplicação de produção ira usar link do React nem do Babel.
 
-### WebPack
+ ### WebPack
 
-- Agrupa(bundle) o código do seu aplicativo.
-- Permite definirmos os componentes em diferentes arquivos para melhor organização.
-- Facilita a importação de codigo externo instalado via NPM.
-- https://webpack.js.org/
+ - Agrupa(bundle) o código do seu aplicativo.
+ - Permite definirmos os componentes em diferentes arquivos para melhor organização.
+ - Facilita a importação de codigo externo instalado via NPM.
+ - https://webpack.js.org/
 
 ### Babel
 
