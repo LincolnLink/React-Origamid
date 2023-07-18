@@ -21,6 +21,12 @@
 
 <body>
 
+  <div id="root">
+    Exemplo 01
+  </div>
+  <br />
+  <br />
+
   <div id="app">
     App
   </div>
@@ -41,6 +47,32 @@
 
 
   <script type="text/babel">
+
+    //Exemplo 01
+    function Button01() {
+      const [total, setTotal] = React.useState(0);
+      return <button onClick={() => setTotal(total + 1)}>Adicionar {total}</button>
+    }
+
+    function App(){
+
+      return <div>
+
+          <h1>Aplicativo React</h1>
+          <Button01 />
+          <Button01 />
+        </div>;
+    }
+
+    
+    ReactDOM.render(<App />, document.getElementById('root'));
+
+    // const container = document.getElementById('root');
+    // const root = ReactDOM.createRoot(container);
+    // root.render(<App />);
+
+
+    //------------------------------------------//
 
     function AppComponent() {
       return <div> Meu App component</div>

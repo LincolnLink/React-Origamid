@@ -25,7 +25,7 @@ const upperName2 = function (name) {
   return name.toUpperCase();
 };
 
-// expressão + arrow function
+// expressão + arrow function.
 const upperName3 = (name) => {
   return name.toUpperCase();
 };
@@ -41,6 +41,9 @@ console.log(upperName3_1('Lincoln'));
 // Pesquisar sobre o "This" na arrow function, que manter o pai.
 
 /*___________________________________*/
+
+console.log('');
+console.log('3° Conceito: desestruturação');
 
 //desestruturação: exemplo complexo.
 function handleMouse(event) {
@@ -109,7 +112,7 @@ function showList2(empresa, ...clientes) {
   });
 }
 console.log('');
-console.log('3° Conceito: Rest e Spread');
+console.log('4° Conceito: Rest e Spread');
 console.log('__________Sem Rest___________');
 showList('Google', ['Andre', 'Rafael', 'Lincoln', 'Leticia']);
 
@@ -159,7 +162,7 @@ console.log(carroAno);
 
 /*___________________________________*/
 console.log('');
-console.log('4° Conceito: Modulos');
+console.log('5° Conceito: Modulos');
 console.log('');
 // No HTML tipa o script do JS como "module".
 
@@ -180,8 +183,8 @@ console.log(quadrado.areaQuadrado(4));
 console.log(quadrado.perimetroQuadrado(5));
 
 console.log('');
-console.log('5° Conceito: Fetch');
-console.log('');
+console.log('6° Conceito: Fetch');
+console.log('Você pode usar o "then" ou usar uma função async com o await dentro.');
 
 // Fetch é uma promese, deve usar o then() e dentro dele uma
 // função de callBack, que transforma em callback.
@@ -214,7 +217,7 @@ const produtos = fetchProdutos(
 
 /*___________________________________*/
 console.log('');
-console.log('5° Conceito: Arrays (Map e Filter)');
+console.log('7° Conceito: Arrays (Map e Filter)');
 console.log('');
 
 const precos = [
@@ -247,7 +250,7 @@ console.log('Transforma valores em numeros: ', precoNumeros);
 
 /*___________________________________*/
 console.log('');
-console.log('6° Conceito: expressão');
+console.log('8° Conceito: expressão');
 console.log('');
 
 // as vezes no React só poder usar expressão, principalmente no JSX.

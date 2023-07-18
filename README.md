@@ -1,55 +1,81 @@
 # React-Origamid
 
-# Ferramentas
+# React Completo - Ferramentas.
 
-- live server
-- Prettier
-- Origamid next
-- ES7 React/Redux/GraphQL/React-Native snippets
+  - Instala o Nodejs, o npn ja vem no Nodejs.
+  - Instala o Git.
+  - Instala o Visual Studio Code.
+  - Instala o plugin do google chrome(React developer Tools)
 
-# JavaScript
+  - Plugin do Visual studio code(opcional)
+    - live server
+    - Prettier
+    - Origamid next
+    - ES7 React/Redux/GraphQL/React-Native snippets
 
-- Exemplos no codigo com comentarios.
+# React Completo - JavaScript
+
+ - Tudo é objeto
+ - Arrow Function
+ - Destructuring
+ - Rest e Spread
+ - Module(Export/Import)
+ - Fetch
+ - Async/Await
+ - Arrays(map e filter)
+ - Expressões
+
+ - Exemplos no codigo com comentarios, no "01 - React Completo - JavaScript".
+
+ - Pesquisar sobre o "This" na arrow function, que manter o pai.
 
 # JS para praticar
 
-- Set : Como se fosse um array, mas ele não guarda itens repetidos.
+  - Set : Como se fosse um array, mas ele não guarda itens repetidos.
 
-- exemplo:
+  - exemplo:
 
-<blockquete>
+  <blockquete>
 
-    const set1 = new Set();
+      const set1 = new Set();
 
-    set1.add(func1);
+      set1.add(func1);
 
-</blockquete>
+  </blockquete>
 
-# Comandos basicos
+# Comandos basicos (atualizando)
 
-- Criando um projeto do zero
+  - Criando um projeto do zero
 
- <blockquote>
+  - hoje em dia não se usa o comando "npx create-react-app my-app".
 
-npx create-react-app my-app
+  <blockquote>
 
- </blockquote>
+      npx create-react-app my-app
 
-# Estudo dos principais arquivos
+  </blockquote>
 
-- Para adicionar o react deve por os 3 links que faz ele funcionar.
+# React Para Iniciantes - Adicionar React
 
-<blockquete>
+ - Babel transforma JS novo para o antigo.
 
-      <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin>
-      </script>
+ - Babel transforma o jsx(não consegue ser lido pelo browser) em arquivos JS.
 
-      <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin>
-      </script>
+ - Criando uma instalação do React muito limpa usando link's.
 
-</blockquete>
+ - Para adicionar o react deve por os 3 links que faz ele funcionar.
 
-- Para usar o JSX, deve por o link que faz ele funcionar, apenas para testar.
+ <blockquete>
+
+        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin>
+        </script>
+
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin>
+        </script>
+
+ </blockquete>
+
+ - Para usar o JSX, deve por o link que faz ele funcionar, apenas para testar.
 
  <blockquete>
 
@@ -57,7 +83,47 @@ npx create-react-app my-app
 
  </blockquete>
 
-- ou pode instalar pelo npm.
+ - Depois que imposta os arquivos é possivel criar componentes do React no HTML usando a tag <script>.
+
+ <blockquete>
+
+    <div id="root">
+      Exemplo 01
+    </div>
+
+    <script type="text/babel">
+      
+      //Componente de botão.
+      function Button01() {
+        const [total, setTotal] = React.useState(0);
+        return <button onClick={() => setTotal(total + 1)}>Adicionar {total}</button>
+      }
+
+      // Componente principal
+      function App(){
+
+        return <div>
+            <h1>Aplicativo React</h1>
+            <Button01 />
+            <Button01 />
+          </div>;
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+
+    <script>
+
+ </blockquete>
+
+ - O "ReactDOM" usa o método "render" para renderizar o componente principal, no HTML que tem o id "root", isso funciona por causa do Babel.
+
+ - Dentro do componente principal é chamado o componente Button01.
+
+# React Para Iniciantes - React Básico.
+
+ </blockquete>
+
+ - ou pode instalar pelo npm.
 
  <blockquete>
  
@@ -67,7 +133,7 @@ npx create-react-app my-app
 
  </blockquete>
 
-- Para executar o compilador.
+ - Para executar o compilador.
 
  <blockquete>
 
