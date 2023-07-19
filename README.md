@@ -298,21 +298,23 @@
 
  - Nunca que em uma aplicação de produção ira usar link do React nem do Babel.
 
- ### WebPack
+ ### Bundle
 
- - Agrupa(bundle) o código do seu aplicativo.
- - Permite definirmos os componentes em diferentes arquivos para melhor organização.
- - Facilita a importação de codigo externo instalado via NPM.
- - https://webpack.js.org/
+  - Agrupa o codigo do aplicativo.
+  - Permite definirmos os componentes em diferentes arquivos para melhor organização.
+  - Facilita a importação de código externo e instalado via NPM
+  - Outros tipos de Bundle: ESBuild, Rollup, Parcel, Turbopack, Webpack.
+  - WebPack: https://webpack.js.org/, mais lento e mais famoso, o mais rapido é ESBuild.
 
-### Babel
+ ### Transpiler
+ 
+  - Transforma o JSX(return < div></ div>) em função de React(React.createElement()).
+  - Transforma JavaScript novo 'const' em JavaScript antigo 'var'.
+  - Babel, SWC, ESBuild.
 
-- Transforma JSX em função de React.
-- Transforma JS novo em JS angitgo.
+ ### webpack Mínimo (instalando o basico para um projeto React)
 
-### webpack Mínimo (instalando o basico para um projeto React)
-
-- Iniciar um pacote npm na pasta do seu aplicativo
+  - Iniciar um pacote npm na pasta do seu aplicativo
 
 <blockquete>
 
@@ -320,184 +322,149 @@
 
 </blockquete>
 
-- Instalar o webpack, webpack-cli e webpack-dev-server
-
-  - webpack: o proprio.
-  - webpack-cli: linhas de comandos.
-  - webpack-dev-server: um miniservidor que é gerado pelo webpack.
-  - --save-dev: salva como uma dependencia de desenvolvimento.
+ - Depois disso cria um arquivo HTML, inicia a estrutura de html5.
 
 <blockquete>
 
-        npm install webpack webpack-cli webpack-dev-server --save-dev
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>React</title>
+    </head>
+    <body>
+        <div id="root">
+
+        </div>
+        <script src="/main.js"></script>
+    </body>
+    </html>
 
 </blockquete>
 
-- Criar arquivos mínimos
+ - Instala o ESBuild
 
 <blockquete>
 
-- index.html
-  -src/
-  -index.js
+    npm install esbuild
 
 </blockquete>
 
-- Modifica no arquivo package.json, na parte de script, os comandos "start"
-  e "build".
-- start: executa em desenvolvimento, injeta o hot para fazer reload.
-- build: cria arquivos finais, reune todos os arquivos juntando em um só.
+ - Cola os script no arquivo package.json.
+ - OBS: o exemplo antigo é feito com webpack.
 
 <blockquete>
 
-    "start": "webpack serve --mode development --open --hot",
-    "build": "webpack --mode production"
+    "scripts": {
+    "start": "esbuild --bundle src/main.jsx --outfile=main.js --servedir=./ --watch",
+    "build": "esbuild --bundle src/main.jsx --outfile=main.js"
+    },
 
 </blockquete>
 
-- instala o React e React-dom
+ - Cria a pasta de entrada "src" e cria o arquivo main.js.
+ - No arquivo main.js, bota um "console.log("teste");"
+ - Pode testar usando o comando "npm start", consulta no caminho: "http://127.0.0.1:8000/".
+ - Cria um arquivo chamado "somar.js". 
 
+ - Executa o codigo "npm run build".
+ - Ele gera um arquivo chamado main.js.
+
+ ### Segundo teste o arquivo main é um "main.jsx".
+  
+  - Executa o npm run build.  
+
+ ### Instalando o React e React-dom. 
+ 
 <blockquete>
 
       npm install react react-dom
 
 </blockquete>
 
-- Executa usando npm start.
-
-- Deve sempre importar as classes do React.
-
-- Com isso é possivel isolar o codigo.
-- Cria um arquivo chamado "App.js", e cria um link.
+ - No arquivo main.jsx, cole o codigo.
 
 <blockquete>
 
-      import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    import React from 'react';
+    import App from './App';
 
-      const App = () => {
-        return React.createElement(
-          'a',
-          { href: 'https://www.origamid.com' },
-          'Origamid',
-        );
-      };
-
-      export default App;
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 
 </blockquete>
 
-- Pode chamar ele no arquivo "Index.js"
+ - Cria o arquivo "App.jsx" e bota o conteudo:
+ 
+<blockquete>
+
+    import React from 'react';
+
+    const App = () => {
+      return <a href="https://www.origamid.com">Origamid</a>;
+    };
+
+    export default App;
+
+</blockquete>
+
+ - Inicie o desenvolvimento com:
 
 <blockquete>
 
-      import React from 'react';
-      import ReactDOM from 'react-dom';
-      import App from './App';
-
-      ReactDOM.render(App(), document.getElementById('root'));
+      npm start
 
 </blockquete>
 
-- Porem precisamos do Babel para transformar esse codigo,
-  então devemos refatorar futuramente.
-
-### Babel Minimo.
-
-- Instala o comando o core do babel.
-- Instala o bale preset- react: porq o babel não foi feito para o react, e sim para
-  transformar JS novo em velho.
-- Instala o babel-loader: O webpack vem leve, com quase nada, ele serve para ter acesso
-  aos load e ter mais lib.
+  - Crie a build final com
 
 <blockquete>
 
-          npm install @babel/core @babel/preset-react babel-loader --save-dev
-
+      npm run build
+      
 </blockquete>
 
-- Criar o webpack.config.js para configurarmos o babel no webpack
+
+ - OBS: Essa forma é limpa, porem estária faltand outras configurações que daria muito trabalho.
+
+
+ # Ferramenta Front End (A melhor forma de criar um projeto React)[Vite].
+
+  - Vite: Cria um ambiente de desenvolvimento já configurado e otimizado para a criação de aplicativos com React.
+  - OBS: muito melhor que "npx create-react-app", "npx create-react-app" usa webpack que é muito lento.
+  - https://vitejs.dev/
+  - Na pasta que deseja instalar:
+  
+<blockquete>
+
+    npm create vite@latest .
+    npm install
+      
+</blockquete>
+
+ - Inicia o desenvolvimento
 
 <blockquete>
 
-      module.exports = {
-        // Nos módulos
-        module: {
-          // Aplique as seguintes regras
-          rules: [
-            {
-              // Nos arquivos que terminam ($) com .js
-              test: /\.js$/,
-              // Não procure nada em node_modules
-              exclude: /node_modules/,
-              // Use o seguinte:
-              use: {
-                // Babel
-                loader: 'babel-loader',
-                // Com as opções padrões para o React
-                options: {
-                  presets: ['@babel/preset-react'],
-                },
-              },
-            },
-          ],
-        },
-      };
+    npm run dev
 
 </blockquete>
 
-### Loaders (CSS)
-
-- instala o load do css, tem que parar a aplicação para instalar.
+ - Cria a build final
 
 <blockquete>
 
-      npm install style-loader css-loader --save-dev
+    npm run build
 
 </blockquete>
 
-- Inclui uma regra.
+ - Arquivos minimos necessario:
 
-<blockquete>
+ - https://www.origamid.com/slide/react-completo/#/0205-ferramenta-front-end/3
 
-          {
-            test: /\.css$/,
-            use: ['style-loader', 'css-loader'],
-          },
 
-</blockquete>
-
-- cria um arquivo css chamado ""
-
-<blockquete>
-
-      a {
-      font-size: 1.5rem;
-      text-decoration: none;
-      font-family: Arial;
-      color: tomato;
-      }
-
-</blockquete>
-
-- arquivo app.js
-
-<blockquete>
-
-    import './App.css';
-
-</blockquete>
-
-# npx create-react-app (A forma simples e rapida de criar um projeto)
-
-- Executa o comado mais um nome do projeto "appauto"
-
-- cria um projeto direto da nuvem.
-
-<blockquete>
-
-      npx create-react-app meuApp02
-
-</blockquete>
+ 
 
 # Ambiente Curso
 
