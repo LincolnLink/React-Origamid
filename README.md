@@ -1,5 +1,19 @@
 # React-Origamid
 
+# JS para praticar
+
+  - Set : Como se fosse um array, mas ele não guarda itens repetidos.
+
+  - exemplo:
+
+  <blockquete>
+
+      const set1 = new Set();
+
+      set1.add(func1);
+
+  </blockquete>
+
 # React Completo - Ferramentas.
 
   - Instala o Nodejs, o npn ja vem no Nodejs.
@@ -29,31 +43,6 @@
 
  - Pesquisar sobre o "This" na arrow function, que manter o pai.
 
-# JS para praticar
-
-  - Set : Como se fosse um array, mas ele não guarda itens repetidos.
-
-  - exemplo:
-
-  <blockquete>
-
-      const set1 = new Set();
-
-      set1.add(func1);
-
-  </blockquete>
-
-# Comandos basicos (atualizando: descontinuado)
-
-  - Criando um projeto do zero
-
-  - hoje em dia não se usa o comando "npx create-react-app my-app", foi descontinuado.
-
-  <blockquote>
-
-      npx create-react-app my-app
-
-  </blockquote>
 
 # React Para Iniciantes - Adicionar React
 
@@ -429,7 +418,7 @@
  - OBS: Essa forma é limpa, porem estária faltand outras configurações que daria muito trabalho.
 
 
- # Ferramenta Front End (A melhor forma de criar um projeto React)[Vite].
+# React Para Iniciantes - Ferramenta Front End (A melhor forma de criar um projeto React)[Vite].
 
   - Vite: Cria um ambiente de desenvolvimento já configurado e otimizado para a criação de aplicativos com React.
   - OBS: muito melhor que "npx create-react-app", "npx create-react-app" usa webpack que é muito lento.
@@ -464,25 +453,37 @@
  - https://www.origamid.com/slide/react-completo/#/0205-ferramenta-front-end/3
 
 
- 
 
-# Ambiente Curso
 
-- Cria um projeto de forma rapida usando o comando do npx.
+# React Para Iniciantes - Ambiente Curso
 
-- remove os arquivos que não for usar, deixa apenas o index.js e App.js
+ - remove os arquivos que não for usar, deixa apenas o index.js e App.js
 
-- na pasta public, no arquivo index.html, bota um css.
+ - na pasta public, no arquivo index.html, bota um css.
 
 <blockquete>
 
-    <link rel="stylesheet" href="%PUBLIC_URL%/style.css" />
+    https://www.origamid.com/slide/react-completo/#/0206-ambiente-do-curso/3
 
 </blockquete>
 
-- o codigo "%PUBLIC_URL%" antes do cominho é um comando webpack que ajuda a localizar o arquivo.
+ - O modo estrito do React permite pegarmos alguns bugs no desenvolvimento.
+ 
+<blockquete>
 
-- cria o arquivo css chamado "style".
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+    );
+
+</blockquete>
+
+ - Durante o curso você verá eu utilizando .js em arquivos jsx, o create-react-app permitia isso, porém o Vite não permite.
+
+ - Então todo arquivo novo que você criar, use .jsx.
+
+ - index.js > main.jsx
 
 # JSX 1
 
