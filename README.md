@@ -485,17 +485,22 @@
 
  - index.js > main.jsx
 
-# JSX 1
+# React Para Iniciantes - JSX 1
 
-- No HTML usado no React, o nome "class" é trocado para "className".
-- E o nome "for" foi trocado para "htmlFor".
-- Podemos envolver o nosso DOM no <React.Fragment>, ao inves de por em uma div.
-- ou está usando o "<></>", também é aceito para envolver o DOM.
-- camelCase nos atributos do HTML do React.
+ - Siginificado: Java script estendio, ou js XML, da novas funcionabilidade, permite usado o html ou xml no js, depois o babel converte para função js.
 
-### Funções no JS no HTML.
+ - Exemplo: https://www.origamid.com/slide/react-completo/#/0207-jsx/1
 
-- Exemplos:
+ - Atributos: 
+  - No HTML do React, o nome "class" é trocado para "className" para fazer referencia ao atributo class de css.
+  - E o nome "for" foi trocado para "htmlFor".
+  - Podemos envolver o nosso DOM no <React.Fragment>, ao inves de por em uma div.
+  - ou está usando o "<></>", também é aceito para envolver o DOM.
+  - camelCase nos atributos com nomes compostos do HTML do React.
+
+ ### Funções no JS no HTML.
+
+ - Exemplos:
 
 <blockquete>
 
