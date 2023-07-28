@@ -452,9 +452,6 @@
 
  - https://www.origamid.com/slide/react-completo/#/0205-ferramenta-front-end/3
 
-
-
-
 # React Para Iniciantes - Ambiente Curso
 
  - remove os arquivos que não for usar, deixa apenas o index.js e App.js
@@ -554,7 +551,7 @@
 
 </blockquete>
 
-# JSX 2
+# React Para Iniciantes - JSX 2 (Rodando no 06 - React Para Iniciantes)[Exercicio]
 
 - O JSX irá listar cada um dos itens da array. Ele não irá separar ou colocar vírgula, é você que deve modificar a array para o resultado desejado.
 
@@ -686,37 +683,225 @@
 
 </blockquete>
 
-# JSX Arrays 1
+ - map: transforma uma lista em outra coisa.
+ - Number: converte o tipo string no tipo numero.
+ - replace: troca o primeiro valor, pelo segundo valor.
+ - reduce: passa um callback(uma função), com 2 parametros, o valor anterior, e o valor atual, e executa calculo com eles.
+ - Pode usar o && no lugar do ternario caso queira exibir uma string dinamicamente.
 
-- exemplos no codigo.
+# React Para Iniciantes - JSX Arrays 1
 
-# Eventos
-
-- Guardar o estado do DOM não é o mais indicado, veremos mais tarde como fazer isso com Hooks.
-
-- Eventos no window/document ou qualquer elemento fora do React, devem ser adicionados com JavaScript normalmente, usando o addEventListener.
-
-- Esse tipo de evento será adicionado com o hook useEffect.]
-
-- Lista de eventos: https://reactjs.org/docs/events.html
-
-# Component
-
-- O ideal é dividir o aplicativo em pequenos componentes para facilitar a manutenção do mesmo. Iremos trabalhar durante o curso com os chamos componentes funcionais.
-
--Não existe limite para a composição de componentes, eles podem ser desde componentes gerais como Header e Footer, até micro componentes como Input e Button.
-
--Um componente deve sempre retornar algo. O retorno pode ser qualquer tipo de dado aceitado pelo JSX (string, array, um elemento JSX, null e etc).
-
--Um componente deve sempre retornar um elemento único no return. Caso você deseje retornar mais de um elemento, envolva os mesmos em uma div ou dentro do <React.Fragment></React.Fragment> ou <></>
+ - O JSX irá listar cada um dos itens da array. Ele não irá separar ou colocar vírgula, é você que deve modificar a array para o resultado desejado.
 
 <blockquete>
 
+    const App = () => {
+      const produtos = ['Notebook', 'Smartphone', 'Tablet'];
+
+      return <p>{produtos}</p>;
+    };
+
 </blockquete>
 
-# Propriedade
+ - O JSX necessita de uma key única para cada elemento da Array. https://reactjs.org/docs/lists-and-keys.html
 
-- É comum desestruturarmos as propriedades.
+<blockquete>
+
+    const App = () => {
+      const empresas = [<li key="e1">Apple</li>, <li key="e2">Google</li>];
+
+      return <ul>{empresas}</ul>;
+    };
+
+</blockquete>
+
+ - Map: É comum usarmos o map direto na array como uma expressão, retornando um elemento para cada item novo da Array.
+ 
+<blockquete>
+
+    const App = () => {
+      const filmes = ['Before Sunrise', 'Before Sunset', 'Before Midnight'];
+
+      return (
+        <ul>
+          {filmes.map((filme) => (
+            <li key={filme}>{filme}</li>
+          ))}
+        </ul>
+      );
+    };
+
+</blockquete>
+
+ - Array de Objetos
+
+<blockquete>
+
+    const App = () => {
+      const livros = [
+        { nome: 'A Game of Thrones', ano: 1996 },
+        { nome: 'A Clash of Kings', ano: 1998 },
+        { nome: 'A Storm of Swords', ano: 2000 },
+      ];
+
+      return (
+        <ul>
+          {livros
+            .filter((livro) => livro.ano >= 1998)
+            .map((livro) => (
+              <li key={livro.nome}>
+                {livro.nome}, {livro.ano}
+              </li>
+            ))}
+        </ul>
+      );
+    };
+    
+</blockquete>
+
+- Pode desestruturar o objeto, ficaria assim:
+
+<blockquete>
+
+    <ul>
+        {livros
+          .filter((livro) => livro.ano >= 1998)
+          .map(({nome, ano}) => (
+          <li key={nome}>
+            {nome}, {ano}
+          </li>
+        ))}
+    </ul>
+
+</blockquete>
+
+ - Exercicio:
+
+<blockquete>
+
+      const produtos = [
+        {
+          id: 1,
+          nome: 'Smartphone',
+          preco: 'R$ 2000',
+          cores: ['#29d8d5', '#252a34', '#fc3766'],
+        },
+        {
+          id: 2,
+          nome: 'Notebook',
+          preco: 'R$ 3000',
+          cores: ['#ffd045', '#d4394b', '#f37c59'],
+        },
+        {
+          id: 3,
+          nome: 'Tablet',
+          preco: 'R$ 1500',
+          cores: ['#365069', '#47c1c8', '#f95786'],
+        },
+      ];
+
+      const App = () => {
+        return (
+          <section>
+            {produtos
+              .filter((produto) => Number(produto.preco.replace('R$ ', '')) > 1500)
+              .map((produto) => (
+                <div key={produto.id}>
+                  <h1>{produto.nome}</h1>
+                  <p>Preço: {produto.preco}</p>
+                  <ul>
+                    {produto.cores.map((cor) => (
+                      <li key={cor} style={{ backgroundColor: cor, color: 'white' }}>
+                        {cor}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+          </section>
+        );
+      };
+
+</blockquete>
+
+# React Para Iniciantes - Eventos
+
+ - Guardar o estado do DOM não é o mais indicado, veremos mais tarde como fazer isso com Hooks.
+
+ - Eventos no window/document ou qualquer elemento fora do React, devem ser adicionados com JavaScript normalmente, usando o addEventListener.
+
+ - Esse tipo de evento será adicionado com o hook useEffect.]
+
+ - Lista de eventos: https://reactjs.org/docs/events.html
+
+
+ - Podemos atribuir eventos diretamente aos elementos JSX como um atributo. Os eventos são sintáticos, ou seja, são criados pelo próprio React porém seguindo as especificações da W3C (e funcionam igualmente nos diversos browsers que o React suporta).
+
+<blockquete>
+
+    const App = () => {
+      function handleClick(event) {
+        alert('Comprou: ' + event.target.innerText);
+      }
+
+      return (
+        <div>
+          <button onClick={handleClick}>Camisa</button>
+          <button onClick={handleClick}>Bermuda</button>
+        </div>
+      );
+    };
+
+</blockquete>
+
+ - Eventos no window/document ou qualquer elemento fora do React, devem ser adicionados com JavaScript normalmente, usando o addEventListener.
+
+<blockquete>
+
+      const App = () => {
+        function handleScroll(event) {
+          console.log(event);
+        }
+        window.addEventListener('scroll', handleScroll);
+
+        return <div style={{ height: '200vw' }}>Div</div>;
+      };
+
+</blockquete>
+
+
+# React Para Iniciantes - Componentes
+
+ - O ideal é dividir o aplicativo em pequenos componentes para facilitar a manutenção do mesmo. Iremos trabalhar durante o curso com os chamos componentes funcionais.
+
+ - Não existe limite para a composição de componentes, eles podem ser desde componentes gerais como Header e Footer, até micro componentes como Input e Button.
+
+ - Um componente deve sempre retornar algo. O retorno pode ser qualquer tipo de dado aceitado pelo JSX (string, array, um elemento JSX, null e etc).
+
+ - Um componente deve sempre retornar um elemento único no return. Caso você deseje retornar mais de um elemento, envolva os mesmos em uma div ou dentro do <React.Fragment></React.Fragment> ou <></>
+
+# React Para Iniciantes - Propriedades
+
+ - Assim como uma função pode receber argumentos, podemos também passar argumentos aos componentes. Esses são conhecidos como propriedades ou props.
+ 
+<blockquete>
+
+      const Titulo = (props) => {
+        return <h1>{props.texto}</h1>;
+      };
+
+      const App = () => {
+        return (
+          <section>
+            <Titulo texto="Meu Primeiro Título" />
+            <Titulo texto="Meu Segundo Título" />
+          </section>
+        );
+      };
+
+</blockquete>
+
+ - Podemos passar quantas propriedades quisermos.
 
 <blockquete>
 
@@ -735,7 +920,26 @@
 
 </blockquete>
 
-- Se utilizarmos o componente abrindo e fechando o mesmo, o conteúdo interno deste será acessado através da propriedade children.
+ - É comum desestruturarmos as propriedades.
+
+<blockquete>
+
+    const Titulo = ({ cor, texto }) => {
+      return <h1 style={{ color: cor }}>{texto}</h1>;
+    };
+
+    const App = () => {
+      return (
+        <section>
+          <Titulo texto="Meu Primeiro Título" cor="blue" />
+          <Titulo texto="Meu Segundo Título" cor="red" />
+        </section>
+      );
+    };
+
+</blockquete>
+
+ - Se utilizarmos o componente abrindo e fechando o mesmo, o conteúdo interno deste será acessado através da propriedade children.
 
 <blockquete>
 
@@ -757,9 +961,9 @@
 
 </blockquete>
 
--Usamos o rest e spread quando não sabemos todas as propriedades que um componente pode receber.
+ - Usamos o rest e spread quando não sabemos todas as propriedades que um componente pode receber.
 
-- oque não foi difinido ele joga a propriedade naturalmente.
+ - O que não foi difinido ele joga a propriedade naturalmente, usando o "...props".
 
 <blockquete>
 
@@ -778,7 +982,21 @@
 
 </blockquete>
 
-# useState
+ - Na chamada do component, caso passe um type diferente, ele vai sobre escrever o type definido no componente.
+ 
+<blockquete>
+
+    <Input id="senha" type="password" label="Senha" />
+
+</blockquete>
+
+ - pode passar qualquer tipo de dados.
+
+ ### O desafio está no projeto "10 - React Para Iniciantes - Propriedades"
+
+ - 
+
+# React Hooks - useState
 
 - Estado: O estado de uma aplicação representa as características dela naquele momento. Por exemplo: os dados do usuário foram carregados, o botão está ativo, o usuário está na página de contato e etc.
 
@@ -893,7 +1111,7 @@ o método.
 
 Funções com efeitos coláterais são aquelas que modificam estados que estão fora das mesmas.
 
-# Teste de Hook
+# React Hooks - Teste de Hook
 
 - O "StrictMode" duplica as chamada, para evitar que aconteça um efeito colateral.
 
@@ -901,7 +1119,7 @@ Funções com efeitos coláterais são aquelas que modificam estados que estão 
 
 - É sempre bom por os métodos set um abaixo do outro.
 
-# useEffect
+# React Hooks - useEffect
 
 - O callback do useEffect é executado depois da renderização inicial.
 
@@ -1014,7 +1232,7 @@ Funções com efeitos coláterais são aquelas que modificam estados que estão 
 
 </blockquete>
 
-# useRef
+# React Hooks - useRef
 
 - Retorna um objeto com a propriedade current. Esse objeto pode ser utilizado para guardarmos valores que irão persistir durante todo o ciclo de vida do elemento. Geralmente usamos o mesmo para nos referirmos a um elemento do DOM, sem precisarmos utilizar o querySelector ou similar.
 
@@ -1350,7 +1568,7 @@ o index serve como key.
 
 </blockquete>
 
-# Custom Hooks
+# React Hooks - Custom Hooks
 
 - Como criar um hook personalizado, ele retorna um array de valores, e não retorna elementos.
 
@@ -1416,7 +1634,7 @@ o index serve como key.
 
 - É possivel descontruir request asyncrinas, porem antes deve ser definido.
 
-# Custom Hooks 2
+# React Hooks - Custom Hooks 2
 
 - Criando um hook personalizado que faz request no banco.
 
@@ -1511,7 +1729,7 @@ o index serve como key.
 
 </blockquete>
 
-# Regras - codigo que retorna erros.
+# React Hooks - Regras - codigo que retorna erros.
 
 - useEffect não pode ser usado dentro de uma confição.
 
