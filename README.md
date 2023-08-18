@@ -998,22 +998,37 @@
 
 # React Hooks - useState
 
-- Estado: O estado de uma aplicação representa as características dela naquele momento. Por exemplo: os dados do usuário foram carregados, o botão está ativo, o usuário está na página de contato e etc.
+ - Estado: O estado de uma aplicação representa as características dela naquele momento. Por exemplo: os dados do usuário foram carregados, o botão está ativo, o usuário está na página de contato e etc.
 
-- Hooks: Os Hooks são funções especiais do React que permitem controlarmos o estado e o ciclo de vida de componentes funcionais. Isso antes só era possível com classes.
+ - Hooks: Os Hooks são funções especiais do React que permitem controlarmos o estado e o ciclo de vida de componentes
+ funcionais. Isso antes só era possível com classes.
+ 
+<blockquete>
 
-- React.useState: O useState é uma função que retorna uma Array com 2 valores. O primeiro valor guarda o dado do estado atual, pode ser qualquer tipo de dado como strings, arrays, números, boolean, null, undefined e objetos. O segundo valor é uma função que pode ser utilizada para modificarmos o estado do primeiro valor.
+      const App = () => {
+        const [ativo, setAtivo] = React.useState(true);
 
-Quando a função de modificação do estado é ativada, todos os componentes que dependerem do estado, serão renderizados novamente e os seus filhos também. É isso que garante a reatividade de componentes funcionais no React.
+        return (
+          <button onClick={() => setAtivo(!ativo)}>
+            {ativo ? 'Botão Ativo' : 'Botão Inativo'}
+          </button>
+        );
+      };
 
-- Múltiplos Estados: Não existem limites para o uso do useState, podemos definir diversos no mesmo componente.
+</blockquete>
 
-- Props: Podemos passar o estado e a função de modificação como propriedades para outros elementos.
+ - React.useState: O useState é uma função que retorna uma Array com 2 valores. O primeiro valor guarda o dado do estado atual, pode ser qualquer tipo de dado como strings, arrays, números, boolean, null, undefined e objetos. O segundo valor é uma função que pode ser utilizada para modificarmos o estado do primeiro valor.
+
+ - Quando a função de modificação do estado é ativada, todos os componentes que dependerem do estado, serão renderizados novamente e os seus filhos também. É isso que garante a reatividade de componentes funcionais no React.
+
+ - Múltiplos Estados: Não existem limites para o uso do useState, podemos definir diversos no mesmo componente.
 
 <blockquete>
 
     const App = () => {
       const [modal, setModal] = React.useState(false);
+      const [ativo, setAtivo] = React.useState(false);
+      const [dados, setDados] = React.useState({ nome: '', idade: '' });
 
       return (
         <div>
@@ -1026,6 +1041,26 @@ Quando a função de modificação do estado é ativada, todos os componentes qu
     export default App;
 
 </blockquete>
+
+ - Props: Podemos passar o estado e a função de modificação como propriedades para outros elementos.
+
+<blockquete>
+
+      const App = () => {
+        const [modal, setModal] = React.useState(false);
+
+        return (
+          <div>
+            <Modal modal={modal} setModal={setModal} />
+            <ButtonModal setModal={setModal} />
+          </div>
+        );
+      };
+
+      export default App;
+
+</blockquete>
+
 
 <blockquete>
 
@@ -1053,7 +1088,7 @@ Quando a função de modificação do estado é ativada, todos os componentes qu
 
 </blockquete>
 
-- Reatividade: Não modifique o estado diretamente. Utilize sempre a função de atualização do estado, pois ela que garante a reatividade dos componentes.
+ - Reatividade: Não modifique o estado diretamente. Utilize sempre a função de atualização do estado, pois ela que garante a reatividade dos componentes.
 
 <blockquete>
 
@@ -1083,10 +1118,9 @@ Quando a função de modificação do estado é ativada, todos os componentes qu
 
 </blockquete>
 
-- Callback: Podemos passar uma função de callback para atualizar o estado. A função de callback recebe um parâmetro que representa o valor anterior e irá modificar o estado para o valor que for retonado na função.
+ - Callback: Podemos passar uma função de callback para atualizar o estado. A função de callback recebe um parâmetro que representa o valor anterior e irá modificar o estado para o valor que for retonado na função.
 
-Passa o método setModal como parametro para outro component, esse component atualiza o status usando
-o método.
+ - Passa o método setModal como parametro para outro component, esse component atualiza o status usando o método.
 
 <blockquete>
 
@@ -1104,6 +1138,33 @@ o método.
         </button>
       );
     };
+
+</blockquete>
+
+ - Não é passado a propriedade no handleClick(), mas como está sendo usado um callback(um método por parametro, ele capitura o valor automaticamente).
+
+
+ - Callback Valor Inicial: A definição do estado inicial também pode ser feita com um callback.
+
+<blockquete>
+
+      const App = () => {
+        // Callback no estado inicial, só será executado na criação do componente
+        const [ativo, setAtivo] = React.useState(() => {
+          const ativoLocal = window.localStorage.getItem('ativo');
+          return ativoLocal;
+        });
+
+        function handleClick() {
+          setAtivo((anterior) => !anterior);
+        }
+
+        return (
+          <button onClick={handleClick}>
+            {ativo ? 'Está Ativo' : 'Está Inativo'}
+          </button>
+        );
+      };
 
 </blockquete>
 
