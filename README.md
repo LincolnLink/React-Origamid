@@ -1143,7 +1143,6 @@
 
  - Não é passado a propriedade no handleClick(), mas como está sendo usado um callback(um método por parametro, ele capitura o valor automaticamente).
 
-
  - Callback Valor Inicial: A definição do estado inicial também pode ser feita com um callback.
 
 <blockquete>
@@ -1168,44 +1167,98 @@
 
 </blockquete>
 
-- React.StrictMode : O modo estrito invoca duas vezes a renderização do componente, quando o estado é atualizado. Assim é possível identificarmos funções com efeitos coláterais (side effects) e eliminarmos as mesmas.
+ - React.StrictMode : O modo estrito invoca duas vezes a renderização do componente, quando o estado é atualizado. Assim é possível identificarmos funções com efeitos coláterais (side effects) e eliminarmos as mesmas.
 
-Funções com efeitos coláterais são aquelas que modificam estados que estão fora das mesmas.
+ - Funções com efeitos coláterais são aquelas que modificam estados que estão fora das mesmas.
 
 # React Hooks - Teste de Hook
 
-- O "StrictMode" duplica as chamada, para evitar que aconteça um efeito colateral.
+ - O "StrictMode" duplica as chamada, para evitar que aconteça um efeito colateral.
 
-- O que causa efeito colateral é por uma chamada de uma função, dentro de outra função.
+ - O que causa efeito colateral é por uma chamada de uma função, dentro de outra função.
 
-- É sempre bom por os métodos set um abaixo do outro.
+ - É sempre bom por os métodos set um abaixo do outro.
 
 # React Hooks - useEffect
 
-- O callback do useEffect é executado depois da renderização inicial.
+ - useEffect: Todo componente possui um ciclo de vida. Os principais momentos acontecem quando o componente é renderizado, atualizado ou destruído. Com o React.useEffect() podemos definir um callback que irá ser executado durante certos momentos do ciclo de vida do componente.
 
-- Ciclo de vida do component:
+ - Array de Dependências: No useEffect podemos definir dois argumentos, o primeiro é a função de callback que será executada, o segundo é uma array com uma lista de dependências. A lista de dependências serve para informarmos quando o efeito deve ocorrer.
 
-  - Momento que ele é renderizado na tela primeiramente.
+<blockquete>
 
-  - Momento que ele é atualizado, por exemplo usando "set" função
+      const App = () => {
+        const [contar, setContar] = React.useState(0);
+
+        // Uma Array vazia indica que o efeito não possui nenhum dependência,
+        // assim o mesmo só irá ocorrer quando o componente é renderizado inicialmente (montado)
+        // O efeito ocorre logo após a renderização do mesmo
+
+        React.useEffect(() => {
+          console.log('Apenas quando renderiza');
+        }, []);
+
+        // Antes de renderizar e toda vez que atualizar o componente
+        console.log('Sempre ocorre, mas antes do useEffect');
+
+        // Agora a dependência está no estado contar,
+        // assim sempre que contar for atualizar este efeito será ativado
+
+        React.useEffect(() => {
+          console.log('Toda vez que atualiza o contar');
+        }, [contar]);
+
+        return <button onClick={() => setContar(contar + 1)}>{contar}</button>;
+      };
+
+</blockquete>
+
+ - Dependências Obrigatórias: Se utilizarmos o valor de um hook ou propriedade dentro de um efeito, ele irá indicar a necessidade de definirmos o mesmo como uma dependência na array.
+
+
+<blockquete>
+
+      const App = () => {
+        const [contar, setContar] = React.useState(0);
+
+        const titulo = 'Clicou ';
+
+        React.useEffect(() => {
+          document.title = titulo + contar;
+          // O ESLint irá indicar que você possui uma dependência não declarada (contar)
+        }, []);
+
+        return <button onClick={() => setContar(contar + 1)}>{contar}</button>;
+      };
+
+</blockquete>
+
+ ### Texto antigo anotações
+
+  - O callback do useEffect é executado depois da renderização inicial.
+
+  - Ciclo de vida do component:
+
+    - Momento que ele é renderizado na tela primeiramente.
+
+    - Momento que ele é atualizado, por exemplo usando "set" função
     atualizadora.
 
-  - Momento que o component some da tela, caso tenha um botão
+    - Momento que o component some da tela, caso tenha um botão
     que ativa e desative.
 
-- O useEffect: é usando para ativar codigos dependendo do ciclo
+  - O useEffect: É usando para ativar codigos dependendo do ciclo
   de vida do component.
 
-  - É bom por um array como segundo parametro.
+    - É bom por um array como segundo parametro.
 
-  - Essa array é um "array de dependencia".
+    - Essa array é um "array de dependencia".
 
-  - Se o estado do item colocado no array mudar, o useEffect irar executar novamente.
-  - Se não mudar, não executa novamente.
+    - Se o estado do item colocado no array mudar, o useEffect irar executar novamente.
+    - Se não mudar, não executa novamente.
 
-  - Pode ter mais de um useEffect.
-  - Caso não bote o estado no array de dependencia, e tenha algum
+    - Pode ter mais de um useEffect.
+    - Caso não bote o estado no array de dependencia, e tenha algum
     codigo dentro do useEffect, ele irar informar, que ele não será
     executado.
 
@@ -1213,19 +1266,19 @@ Funções com efeitos coláterais são aquelas que modificam estados que estão 
 
     - useEffect sabe diferenciar uma constante estatica de um valor de estado.
 
-- OBS: O component é uma função em JS, que executa o tempo todo, com useEffect() você pode ter o controle usando [] (o array de dependencia) , que no caso é o segundo parametro, só é executado oque está no useEffect() se o estado que está dentro do array de dependencia mudar, se estiver vazio só vai executar uma unica vez.
+  - OBS: O component é uma função em JS, que executa o tempo todo, com useEffect() você pode ter o controle usando [] (o array de dependencia) , que no caso é o segundo parametro, só é executado oque está no useEffect() se o estado que está dentro do array de dependencia mudar, se estiver vazio só vai executar uma unica vez.
 
-- Comandos:
+  - Comandos:
 
-  - Para executar uma unica vez: Deve por a função em uma useEffect(), e depois por um array vazio, como segundo parametro.
+    - Para executar uma unica vez: Deve por a função em uma useEffect(), e depois por um array vazio, como segundo parametro.
 
-  - Para executar quando um useState mudar: Deve por a função em um useEffect(), com array vazio, e ir mudando pelo "set".
+    - Para executar quando um useState mudar: Deve por a função em um useEffect(), com array vazio, e ir mudando pelo "set".
 
-  - Para ter varios efeitos independente: duplica o useEffect, e bota o valor do useStatus no array de dependecia.
+    - Para ter varios efeitos independente: duplica o useEffect, e bota o valor do useStatus no array de dependecia.
 
   - Exemplo: mudar titulo e resetar o contar:
 
-  </blockquete>
+<blockquete>
 
         const [contar, setContar] = useStatus(0);
         const [modal, setModal] = useStatus(false);
@@ -1238,12 +1291,12 @@ Funções com efeitos coláterais são aquelas que modificam estados que estão 
         setContar(0);
         }. [modal]);
 
-  <blockquete>
+</blockquete>
 
-- Efeito antes de desmontar: caos um elemento que sai da tela, Antes de Desmontar
+  - Efeito antes de desmontar: caos um elemento que sai da tela, Antes de Desmontar
   As vezes precisamos executar um efeito sempre que um componente for desmontado. Para isso utilizamos um callback no retorno do callback do efeito.
 
-  </blockquete>
+<blockquete>
 
         const Produto = () => {
         // Utilizamos o useEffect para adicionarmos eventos direto ao DOM
@@ -1261,8 +1314,8 @@ Funções com efeitos coláterais são aquelas que modificam estados que estão 
         return <p style={{ height: '200vh' }}>Produto</p>;
       };
 
-  <blockquete>
-  <blockquete>
+</blockquete>
+<blockquete>
 
         const DesmontarUseEffect = () => {
         const [ativo, setAtivo] = React.useState(false);
@@ -1276,9 +1329,9 @@ Funções com efeitos coláterais são aquelas que modificam estados que estão 
           );
         };
 
-  </blockquete>
+</blockquete>
 
-### OBS: sempre use um ternario para exibir dados!
+  ### OBS: sempre use um ternario para exibir dados!
 
 <blockquete>
 

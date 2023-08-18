@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Home from './Home';
 import UseStates from './Hooks/useState/useState';
+import UseEffect from './Hooks/useEffect/useEffect';
 
 const App = () => {
 
@@ -11,7 +12,11 @@ const App = () => {
   let Component;
   if (pathname === '/useStates') {
     Component = UseStates;
-  } else {
+  }
+  if(pathname === '/useEffect'){
+    Component = UseEffect;
+  }
+  else {
     Component = Home;
   }
   //Desafio

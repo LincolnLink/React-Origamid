@@ -10,6 +10,9 @@ const Header = () => {
         <li>
           <a href="/useStates">UseStates</a>
         </li>
+        <li>
+          <a href="/useEffect">UseEffect</a>
+        </li>
       </ul>
     </header>
   );
