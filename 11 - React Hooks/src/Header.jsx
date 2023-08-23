@@ -13,6 +13,9 @@ const Header = () => {
         <li>
           <a href="/useEffect">UseEffect</a>
         </li>
+        <li>
+          <a href="/useRef">UseRef</a>
+        </li>
       </ul>
     </header>
   );

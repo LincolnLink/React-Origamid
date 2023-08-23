@@ -994,7 +994,6 @@
 
  ### O desafio está no projeto "10 - React Para Iniciantes - Propriedades"
 
- - 
 
 # React Hooks - useState
 
@@ -1215,7 +1214,6 @@
 
  - Dependências Obrigatórias: Se utilizarmos o valor de um hook ou propriedade dentro de um efeito, ele irá indicar a necessidade de definirmos o mesmo como uma dependência na array.
 
-
 <blockquete>
 
       const App = () => {
@@ -1233,91 +1231,96 @@
 
 </blockquete>
 
- ### Texto antigo anotações
+ - Componente Montou: O useEffect será especialmente utilizado quando precisamos definir um efeito que deve ocorrer uma vez apenas, como o fetch de dados no servidor por exemplo.
 
-  - O callback do useEffect é executado depois da renderização inicial.
-
-  - Ciclo de vida do component:
-
-    - Momento que ele é renderizado na tela primeiramente.
-
-    - Momento que ele é atualizado, por exemplo usando "set" função
-    atualizadora.
-
-    - Momento que o component some da tela, caso tenha um botão
-    que ativa e desative.
-
-  - O useEffect: É usando para ativar codigos dependendo do ciclo
-  de vida do component.
-
-    - É bom por um array como segundo parametro.
-
-    - Essa array é um "array de dependencia".
-
-    - Se o estado do item colocado no array mudar, o useEffect irar executar novamente.
-    - Se não mudar, não executa novamente.
-
-    - Pode ter mais de um useEffect.
-    - Caso não bote o estado no array de dependencia, e tenha algum
-    codigo dentro do useEffect, ele irar informar, que ele não será
-    executado.
-
-    - Ou informe o estado para o array de dependencia, ou remove o array de dependencia.
-
-    - useEffect sabe diferenciar uma constante estatica de um valor de estado.
-
-  - OBS: O component é uma função em JS, que executa o tempo todo, com useEffect() você pode ter o controle usando [] (o array de dependencia) , que no caso é o segundo parametro, só é executado oque está no useEffect() se o estado que está dentro do array de dependencia mudar, se estiver vazio só vai executar uma unica vez.
-
-  - Comandos:
-
-    - Para executar uma unica vez: Deve por a função em uma useEffect(), e depois por um array vazio, como segundo parametro.
-
-    - Para executar quando um useState mudar: Deve por a função em um useEffect(), com array vazio, e ir mudando pelo "set".
-
-    - Para ter varios efeitos independente: duplica o useEffect, e bota o valor do useStatus no array de dependecia.
-
-  - Exemplo: mudar titulo e resetar o contar:
+ ### Sempre por a dependencia vazia se não, fica chamando varias vezes.
 
 <blockquete>
 
-        const [contar, setContar] = useStatus(0);
-        const [modal, setModal] = useStatus(false);
+      const App = () => {
+        const [contar, setContar] = React.useState(0);
+        const [dados, setDados] = React.useState(null);
 
-        useEffect(()=>{
-          documento.title = 'Total' + contar;
-        }. [contar]);
-
-        useEffect(()=>{
-        setContar(0);
-        }. [modal]);
-
-</blockquete>
-
-  - Efeito antes de desmontar: caos um elemento que sai da tela, Antes de Desmontar
-  As vezes precisamos executar um efeito sempre que um componente for desmontado. Para isso utilizamos um callback no retorno do callback do efeito.
-
-<blockquete>
-
-        const Produto = () => {
-        // Utilizamos o useEffect para adicionarmos eventos direto ao DOM
         React.useEffect(() => {
-          function handleScroll(event) {
-            console.log(event);
-          }
-          window.addEventListener('scroll', handleScroll);
-          // Limpa o evento quando o elemento é removido do DOM.
-          return () => {
-            window.removeEventListener('scroll', handleScroll);
-          };
+          // se o fetch estivesse fora do useEffect, toda vez que o componente
+          // fosse atualizado, o mesmo seria executado
+          fetch('https://ranekapi.origamid.dev/json/api/produto/notebook')
+            .then((response) => response.json())
+            .then((json) => setDados(json));
         }, []);
 
-        return <p style={{ height: '200vh' }}>Produto</p>;
+        return (
+          <div>
+            {dados && (
+              <div>
+                <h1>{dados.nome}</h1>
+                <p>R$ {dados.preco * contar}</p>
+              </div>
+            )}
+            <button onClick={() => setContar(contar + 1)}>{contar}</button>
+          </div>
+        );
       };
 
 </blockquete>
+
+ - Múltiplos Efeitos: Podemos ter diversos useEffect no nosso código. O ideal é separarmos efeitos diferentes em useEffect diferentes.
+
 <blockquete>
 
-        const DesmontarUseEffect = () => {
+      const App = () => {
+        const [contar, setContar] = React.useState(0);
+        const [modal, setModal] = React.useState(false);
+
+        React.useEffect(() => {
+          document.title = 'Total ' + contar;
+        }, [contar]);
+
+        React.useEffect(() => {
+          setContar(0);
+        }, [modal]);
+
+        return (
+          <div>
+            {modal && <p>Meu Modal</p>}
+            <button onClick={() => setModal(!modal)}>Modal</button>
+            <hr />
+            <button onClick={() => setContar(contar + 1)}>{contar}</button>
+          </div>
+        );
+      };
+
+</blockquete>
+
+ - Antes de Desmontar: As vezes precisamos executar um efeito sempre que um componente for desmontado. Para isso utilizamos um callback no retorno do callback do efeito.
+
+ ### Pode passar um callback como retorno dentro da primeira função do useEffect, é executado quando o elemento elemento sai da tela.
+
+<blockquete>
+
+    const Produto = () => {
+      // Utilizamos o useEffect para adicionarmos eventos direto ao DOM
+      React.useEffect(() => {
+        function handleScroll(event) {
+          console.log(event);
+        }
+        window.addEventListener('scroll', handleScroll);
+        // Limpa o evento quando o elemento é removido do DOM.
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }, []);
+
+      return <p style={{ height: '200vh' }}>Produto</p>;
+    };
+
+</blockquete>
+
+ ### OBS: sempre use um ternario para exibir dados!
+
+<blockquete>
+
+      const App = () => {
         const [ativo, setAtivo] = React.useState(false);
 
         return (
@@ -1326,27 +1329,102 @@
             <button onClick={() => setAtivo(!ativo)}>Abrir</button>
             {ativo && <Produto />}
           </div>
-          );
-        };
-
+        );
+      };
+      
 </blockquete>
 
-  ### OBS: sempre use um ternario para exibir dados!
+
+# React Hooks - useRef
+
+ - Retorna um objeto com a propriedade current. Esse objeto pode ser utilizado para guardarmos valores que irão persistir durante todo o ciclo de vida do elemento. Geralmente usamos o mesmo para nos referirmos a um elemento do DOM, sem precisarmos utilizar o querySelector ou similar.
+
+ - Processo:
+
+ - 1° Deve declarar uma const recebendo o "React.useRef()".
+ - 2° Essa consta faz referencia a algum DOM.
+ - 3° Pode usar a propriedade current para recuperar a referencia do DOM.
 
 <blockquete>
 
-    <div>
-        {dados && (
-          <div>
-            <h1>{dados.nome}</h1>
-          </div>
-        )}
+      const App = () => {
+        const video = React.useRef();
 
-    </div>
+        React.useEffect(() => {
+          console.log(video.current);
+        }, []);
+
+        return <video ref={video}></video>;
+      };
 
 </blockquete>
 
-# React Hooks - useRef
+ - focus(): É comum utilizarmos em formulários, quando precisamos de uma referência do elemento para colocarmos o mesmo em foco.
+
+<blockquete>
+
+      const App = () => {
+        const [comentarios, setComentarios] = React.useState([]);
+        const [input, setInput] = React.useState('');
+        const inputElement = React.useRef();
+
+        function handleClick() {
+          setComentarios((comentarios) => [...comentarios, input]);
+          setInput('');
+          inputElement.current.focus();
+        }
+
+        return (
+          <div>
+            <ul>
+              {comentarios.map((comentario) => (
+                <li key={comentario}>{comentario}</li>
+              ))}
+            </ul>
+            <input
+              type="text"
+              value={input}
+              ref={inputElement}
+              onChange={({ target }) => setInput(target.value)}
+            />
+            <br />
+            <button onClick={handleClick}>Enviar</button>
+          </div>
+        );
+      };
+
+</blockquete>
+
+ - Referência : O seu uso não é restrito a elementos do dom. Podemos utilizar também para guardarmos a referência de qualquer valor, como de um setTimeout por exemplo.
+
+<blockquete>
+
+      const App = () => {
+        const [contar, setContar] = React.useState(0);
+        const [notificacao, setNotificacao] = React.useState(null);
+        const timeoutRef = React.useRef();
+
+        function handleClick() {
+          setNotificacao('Obrigado por comprar');
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = setTimeout(() => {
+            setNotificacao(null);
+          }, 1000);
+          setContar(contar + 1);
+        }
+
+        return (
+          <div>
+            <p>{notificacao}</p>
+            <button onClick={handleClick}>{contar}</button>
+          </div>
+        );
+      };
+
+</blockquete>
+
+
+# Texto antigo useRef
 
 - Retorna um objeto com a propriedade current. Esse objeto pode ser utilizado para guardarmos valores que irão persistir durante todo o ciclo de vida do elemento. Geralmente usamos o mesmo para nos referirmos a um elemento do DOM, sem precisarmos utilizar o querySelector ou similar.
 

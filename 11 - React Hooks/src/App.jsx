@@ -3,6 +3,7 @@ import Header from './Header';
 import Home from './Home';
 import UseStates from './Hooks/useState/useState';
 import UseEffect from './Hooks/useEffect/useEffect';
+import UseRef from './Hooks/useRef/useRef';
 
 const App = () => {
 
@@ -13,8 +14,11 @@ const App = () => {
   if (pathname === '/useStates') {
     Component = UseStates;
   }
-  if(pathname === '/useEffect'){
+  else if(pathname === '/useEffect'){
     Component = UseEffect;
+  }
+  else if(pathname === '/useRef'){
+    Component = UseRef;
   }
   else {
     Component = Home;
