@@ -1,5 +1,7 @@
 # React-Origamid
 
+ - Curso: https://www.origamid.com/curso/react-completo/
+
 # JS para praticar
 
   - Set : Como se fosse um array, mas ele não guarda itens repetidos.
