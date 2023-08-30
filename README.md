@@ -1423,74 +1423,10 @@
 
 </blockquete>
 
+### descobrir depois outras formas de usar o REF, outras propriedades que pode ser manipulada.
 
-# Texto antigo useRef
 
-- Retorna um objeto com a propriedade current. Esse objeto pode ser utilizado para guardarmos valores que irão persistir durante todo o ciclo de vida do elemento. Geralmente usamos o mesmo para nos referirmos a um elemento do DOM, sem precisarmos utilizar o querySelector ou similar.
-
--OBS:
-
-1° Deve declarar uma const recebendo o "React.useRef()".
-2° Essa consta faz referencia a algum DOM.
-3° Pode usar a propriedade current para recuperar a referencia do DOM.
-
-<blockquete>
-
-    const video = React.useRef();
-
-    React.useEffect(() => {
-      console.log(video.current);
-    }, []);
-
-    return <video ref={video}></video>;
-
-</blockquete>
-
-<blockquete>
-
-    export const UseRefComponent2 = () => {
-      const [comentarios, setComentarios] = useState([]);
-      const [input, setInput] = useState('');
-      const inputElement = React.useRef();
-
-      React.useEffect(() => {}, []);
-
-      // Pega o novo comentario e adiciona na lista de comentario.
-      function handleClick() {
-        //Uma forma diferente de adicionar item no array!
-        setComentarios([...comentarios, input]);
-        setInput('');
-        inputElement.current.focus();
-      }
-
-      return (
-        <>
-          <ul>
-            {comentarios.map((com) => (
-              <li key={com}>{com}</li>
-            ))}
-          </ul>
-
-          <input
-            type="text"
-            ref={inputElement}
-            value={input}
-            onChange={({ target }) => setInput(target.value)}
-          />
-          <br />
-          <button onClick={handleClick}>Enviar</button>
-        </>
-      );
-    };
-
-</blockquete>
-
-OBS: map também tem index, é o segundo parametro do callback do map,
-o index serve como key.
-
-- UseRef, pode ser usado para ser referencia de valores, sem ser reativo, e sim valores que pode ser usado mais tarde, não confunda com variavel, porq variavel perde o valor quando é renderizado novamente quando atualiza a tela, já o ref não perde o valor.
-
-#useMemo
+# React Hooks - useMemo
 
 - performance.now(): informa o tempo que foi usado em milesegundos.
 
