@@ -22,7 +22,7 @@ const UseStates = () => {
 
   return (
     <>
-      <h1>useState</h1>
+      <h1>UseState</h1>
       <button onClick={() => setAtivo(!ativo)}>
         {ativo ? 'Botão Ativo' : 'Botão Inativo'}
       </button>

@@ -16,6 +16,9 @@ const Header = () => {
         <li>
           <a href="/useRef">UseRef</a>
         </li>
+        <li>
+          <a href="/useMemo">UseMemo</a>
+        </li>
       </ul>
     </header>
   );

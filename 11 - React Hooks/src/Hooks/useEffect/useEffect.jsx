@@ -50,6 +50,7 @@ const UseEffect = () => {
   
     return (
         <>
+        <h1>UseEfect</h1>
             <button onClick={() => setContar2(contar + 1)}>
                 {contar}
             </button>

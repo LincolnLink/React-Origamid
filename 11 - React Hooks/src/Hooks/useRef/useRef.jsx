@@ -5,9 +5,9 @@ const UseRef = () => {
     const tes = React.useRef();    
   
     React.useEffect(() => {
-      console.log(video.current);
+      console.log("video: ", video.current);
       //tes.style.backgroundColor = '#3a1a1a';
-      console.log(tes);
+      console.log("teste: ", tes.current);
     }, []);
 
     //Testeando o focus
@@ -38,11 +38,10 @@ const UseRef = () => {
       teste01.current = 44;
       console.log("teste01: ", teste01.current);
     }
-    
 
-  
     return (
       <>
+          <h1>UseRef</h1>
           <div ref={tes}>Teste</div>
 
           <video ref={video}></video>  
@@ -61,7 +60,7 @@ const UseRef = () => {
           />
           <br/>
           <button onClick={handleClick}>Enviar</button>   
-          <br/>
+          <br/><br/><br/>
           <h2>Usando o useRef de outra forma</h2>
           <p>{notificacao}</p>
           <button onClick={handleClick2}>{contar}</button>

@@ -4,12 +4,14 @@ import Home from './Home';
 import UseStates from './Hooks/useState/useState';
 import UseEffect from './Hooks/useEffect/useEffect';
 import UseRef from './Hooks/useRef/useRef';
+import UseMemo from './Hooks/useMemo/useMemo';
 
 const App = () => {
 
   //Desafio  
   const { pathname } = window.location;
 
+  // Sistema de paginação temporario.
   let Component;
   if (pathname === '/useStates') {
     Component = UseStates;
@@ -19,6 +21,9 @@ const App = () => {
   }
   else if(pathname === '/useRef'){
     Component = UseRef;
+  }
+  else if(pathname === '/useMemo'){
+    Component = UseMemo;
   }
   else {
     Component = Home;
@@ -32,7 +37,6 @@ const App = () => {
           <Header />
           <Component />
         </section>
-
 
     </>
   );

@@ -1347,6 +1347,10 @@
  - 2° Essa consta faz referencia a algum DOM.
  - 3° Pode usar a propriedade current para recuperar a referencia do DOM.
 
+ - Para obter o valor do useRef, é bom por ele dentro de um useEfect().
+
+ - useRef não renderiza o componente novamente, ele mantem o valor.
+
 <blockquete>
 
       const App = () => {
