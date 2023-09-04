@@ -5,6 +5,7 @@ import UseStates from './Hooks/useState/useState';
 import UseEffect from './Hooks/useEffect/useEffect';
 import UseRef from './Hooks/useRef/useRef';
 import UseMemo from './Hooks/useMemo/useMemo';
+import UseCallback from './Hooks/useCallback/useCallback';
 
 const App = () => {
 
@@ -25,6 +26,12 @@ const App = () => {
   else if(pathname === '/useMemo'){
     Component = UseMemo;
   }
+  else if(pathname === '/useCallback'){
+    Component = UseCallback;
+  }
+  else if(pathname === '/useContext'){
+    Component = UseContext;
+  }  
   else {
     Component = Home;
   }

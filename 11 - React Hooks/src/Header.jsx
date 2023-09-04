@@ -19,6 +19,12 @@ const Header = () => {
         <li>
           <a href="/useMemo">UseMemo</a>
         </li>
+        <li>
+          <a href="/useCallback">UseCallback</a>
+        </li>
+        <li>
+          <a href="/useContext">UseContext</a>
+        </li>
       </ul>
     </header>
   );
