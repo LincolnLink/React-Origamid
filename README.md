@@ -1586,113 +1586,160 @@
 
 # React Hooks - useContext
 
- - Uma forma de passar dados de um component para o outro, de forma mais dinamica,
-  sem usar o props.
+ - O useContext é CRIADO(createContext()), RETORNADO(passando dados pelo provider), e depois USADO(useContext())
 
- - Primeiro deve criar um component ~GlobalContext~ que vai ter o createContex() !
+ ### createContext
 
- - Nele vai ter toda a regra dos dados que vai ser passado.
+ - O contexto irá permitir passarmos dados/estado a todos os componentes, sem a necessidade de utilizar propriedades. Serve principalmente para dodos/estados globais como por exemplo dados do usuário logado.
 
 <blockquete>
 
-    import React from 'react';
+        import React from 'react';
 
-    export const GlobalContext = React.createContext();
+        const UserContext = React.createContext();
 
-    //Provider
-    export const GlobalStorage = ({ children }) => {
-      const [dados, setDados] = React.useState(null);
-
-      //Buscando os produtos
-      React.useEffect(() => {
-        fetch('https://ranekapi.origamid.dev/json/api/produto/')
-          .then((response) => response.json())
-          .then((json) => setDados(json));
-      }, []);
-
-      function limparDados() {
-        setDados(null);
-      }
-
-      return (
-        <GlobalContext.Provider value={{ dados, limparDados }}>
-          {children}
-        </GlobalContext.Provider>
-      );
-    };
+        export default UserContext;
 
 </blockquete>
  
- - Depois cria o component filho, que vai receber os dados, nesse caso foi criado o component produto e limpar.
+ ### Provider
 
- - produto recebe os dados e limpar recebe um botao que limpa os dados.
-
+ - O método Provider deve ser utilizado para envolver todos os elementos que terão acesso aos dados do Context. Provider recebe uma propriedade chamada value, dentro dela que devemos informar os dados do contexto.
+ 
 <blockquete>
 
-    import React from 'react';
-    import { GlobalContext } from '../../src/GlobalContext/index';
+        import React from 'react';
+        import Produto from './Produto';
+        import UserContext from './UserContext';
 
-    const Produto = () => {
-      const { dados } = React.useContext(GlobalContext);
-      //debugger;
+        const App = () => {
+          return (
+            <UserContext.Provider value={{ nome: 'André' }}>
+              <Produto />
+            </UserContext.Provider>
+          );
+        };
 
-      if (dados === null) return null;
-
-      return (
-        <div>
-          <ul>
-            Produto:{''}
-            {dados.map((produto) => (
-              <li key={produto.id}>{produto.nome}</li>
-            ))}
-          </ul>
-        </div>
-      );
-    };
-
-    export default Produto;
+        export default App;
 
 </blockquete>
 
- - component limpar
+ ### useContext
+
+ - O useContext é o hook que deve ser utilizado para consumirmos o contexto e termos assim acesso aos dados de value. Devemos passar o contexto criado como seu agumento.
 
 <blockquete>
 
-    import React from 'react';
-    import { GlobalContext } from '../GlobalContext';
+        import React from 'react';
+        import UserContext from './UserContext';
 
-    const Limpar = () => {
-      const { limparDados } = React.useContext(GlobalContext);
-      return <button onClick={limparDados}>Limpar</button>;
-    };
+        const Produto = () => {
+          const user = React.useContext(UserContext);
 
-    export default Limpar;
+          return <p>Produto de: {user.nome}</p>;
+        };
+
+        export default Produto;
 
 </blockquete>
 
- - No component APP, deve ser chamado os component, botando o filho dentro do pai.
+ ### GlobalStorage
+
+ - Exemplo de uso real do context. Podemos passar qualquer coisa no value do context, até estados e funções atualizadoras do useState.
 
 <blockquete>
 
-    import './App.css';
-    import { GlobalStorage } from './GlobalContext/index';
-    import Produto from './Produto/index';
-    import Limpar from './Limpar';
+          import React from 'react';
+          import Produto from './Produto';
+          import { GlobalStorage } from './GlobalContext';
 
-    function App() {
-      return (
-        <div className="App">
-          <GlobalStorage>
-            <Produto />
-            <Limpar />
-          </GlobalStorage>
-        </div>
-      );
-    }
+          const App = () => {
+            return (
+              <GlobalStorage>
+                <Produto />
+              </GlobalStorage>
+            );
+          };
 
-    export default App;
+          export default App;
 
 </blockquete>
+
+ - GlobalContext.jsx
+
+<blockquete>
+
+        import React from 'react';
+
+        export const GlobalContext = React.createContext();
+
+        export const GlobalStorage = ({ children }) => {
+          const [carrinho, setCarrinho] = React.useState(0);
+
+          return (
+            <GlobalContext.Provider value={{ carrinho, setCarrinho }}>
+              {children}
+            </GlobalContext.Provider>
+          );
+        };
+
+</blockquete>
+
+ - Produto.jsx
+
+<blockquete>
+
+        import React from 'react';
+        import { GlobalContext } from './GlobalContext';
+
+        const Produto = () => {
+          const global = React.useContext(GlobalContext);
+
+          function handleClick() {
+            global.setCarrinho((carrinho) => carrinho + 1);
+          }
+
+          return (
+            <p>
+              Total: {global.carrinho}: <button onClick={handleClick}>Adicionar</button>
+            </p>
+          );
+        };
+
+        export default Produto;
+
+</blockquete>
+
+ - Exercicio.
+
+<blockquete>
+
+      import React from 'react';
+
+      export const GlobalContext = React.createContext();
+
+      export const GlobalStorage = ({ children }) => {
+        const [produto, setProduto] = React.useState(null);
+
+        React.useEffect(() => {
+          fetch('https://ranekapi.origamid.dev/json/api/produto/')
+            .then((response) => response.json())
+            .then((json) => setProduto(json));
+        }, []);
+
+        function limparDados() {
+          setProduto(null);
+        }
+
+        return (
+          <GlobalContext.Provider value={{ produto, setProduto, limparDados }}>
+            {children}
+          </GlobalContext.Provider>
+        );
+      };
+
+</blockquete>
+
 
 # React Hooks - Custom Hooks
 

@@ -6,6 +6,7 @@ import UseEffect from './Hooks/useEffect/useEffect';
 import UseRef from './Hooks/useRef/useRef';
 import UseMemo from './Hooks/useMemo/useMemo';
 import UseCallback from './Hooks/useCallback/useCallback';
+import UseContextExemplo from './Hooks/useContext/useContextExemplo';
 
 const App = () => {
 
@@ -30,8 +31,8 @@ const App = () => {
     Component = UseCallback;
   }
   else if(pathname === '/useContext'){
-    Component = UseContext;
-  }  
+    Component = UseContextExemplo;
+  }
   else {
     Component = Home;
   }
