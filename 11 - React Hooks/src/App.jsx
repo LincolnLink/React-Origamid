@@ -7,6 +7,7 @@ import UseRef from './Hooks/useRef/useRef';
 import UseMemo from './Hooks/useMemo/useMemo';
 import UseCallback from './Hooks/useCallback/useCallback';
 import UseContextExemplo from './Hooks/useContext/useContextExemplo';
+import CustomHooks from './Hooks/customHooks/customHooks';
 
 const App = () => {
 
@@ -32,6 +33,9 @@ const App = () => {
   }
   else if(pathname === '/useContext'){
     Component = UseContextExemplo;
+  }
+  else if(pathname === '/customHooks'){
+    Component = CustomHooks;
   }
   else {
     Component = Home;

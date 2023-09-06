@@ -1743,15 +1743,109 @@
 
 # React Hooks - Custom Hooks
 
-- Como criar um hook personalizado, ele retorna um array de valores, e não retorna elementos.
+ ### useLocalStorage
 
-- [cuidado] No localStorage so se salva string!
+ - Podemos criar nossos próprios hooks, assim evitamos a repetição de código. Todo custom hook deve começar com a palavra use. Exemplo: useNomeDoHook. Podemos retornar o que quisermos do hook, seja um valor único, uma array ou um objeto.
 
-- Vai ser criado um hook personalizado para guardar valores no localStorage!.
+<blockquete>
 
-- O valor iniciar, é definido com uma verificação, se existe o valor no localStorage ou não.
+        const useLocalStorage = (key, inicial) => {
+          const [state, setState] = React.useState(() => {
+            const local = window.localStorage.getItem(key);
+            return local ? local : inicial;
+          });
 
-- Cria um efeito para quando valor for modificado, trocar o valor no useState.
+          React.useEffect(() => {
+            window.localStorage.setItem(key, state);
+          }, [key, state]);
+
+          return [state, setState];
+        };
+
+</blockquete>
+
+<blockquete>
+
+        import useLocalStorage from './useLocalStorage';
+
+        const App = () => {
+          const [produto, setProduto] = useLocalStorage('produto', '');
+
+          function handleClick({ target }) {
+            setProduto(target.innerText);
+          }
+
+          return (
+            <div>
+              <p>Preferido: {produto}</p>
+              <button onClick={handleClick}>notebook</button>
+              <button onClick={handleClick}>smartphone</button>
+            </div>
+          );
+        };
+
+</blockquete>
+
+ - useFetch: Aqui o useCallback é necessário para evitar um render infinito.
+
+<blockquete>
+
+        import React from 'react';
+
+        const useFetch = () => {
+          const [data, setData] = React.useState(null);
+          const [error, setError] = React.useState(null);
+          const [loading, setLoading] = React.useState(null);
+
+          const request = React.useCallback(async (url, options) => {
+            let response;
+            let json;
+            try {
+              setError(null);
+              setLoading(true);
+              response = await fetch(url, options);
+              json = await response.json();
+              if (response.ok === false) throw new Error(json.message);
+            } catch (err) {
+              json = null;
+              setError(err.message);
+            } finally {
+              setData(json);
+              setLoading(false);
+              return { response, json };
+            }
+          }, []);
+
+          return { data, loading, error, request };
+        };
+
+        export default useFetch;
+
+
+
+</blockquete>
+
+<blockquete>
+
+
+</blockquete>
+
+<blockquete>
+
+
+</blockquete>
+
+ ### dicas antigas
+
+ - Como criar um hook personalizado, ele retorna um array de valores, e não retorna elementos.
+
+ - [cuidado] No localStorage so se salva string!
+
+ - Vai ser criado um hook personalizado para guardar valores no localStorage!.
+
+ - O valor iniciar, é definido com uma verificação, se existe o valor no localStorage ou não.
+
+ - Cria um efeito para quando valor for modificado, trocar o valor no useState.
 
 <blockquete>
 
@@ -1775,7 +1869,7 @@
 
 </blockquete>
 
-- Usando o "useLocalStorage"!
+ - Usando o "useLocalStorage"!
 
 <blockquete>
 
@@ -1803,9 +1897,9 @@
 
 </blockquete>
 
-- OBS: Para tratar erro de funções asyncornas, se usa TRY E CATCH.
+ - OBS: Para tratar erro de funções asyncornas, se usa TRY E CATCH.
 
-- É possivel descontruir request asyncrinas, porem antes deve ser definido.
+ - É possivel descontruir request asyncrinas, porem antes deve ser definido.
 
 # React Hooks - Custom Hooks 2
 

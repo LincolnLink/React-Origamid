@@ -25,6 +25,9 @@ const Header = () => {
         <li>
           <a href="/useContext">UseContext</a>
         </li>
+        <li>
+          <a href="/customHooks">CustomHooks</a>
+        </li>
       </ul>
     </header>
   );
