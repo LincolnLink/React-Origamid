@@ -10,8 +10,7 @@ import UseContextExemplo from './Hooks/useContext/useContextExemplo';
 import CustomHooks from './Hooks/customHooks/customHooks';
 
 const App = () => {
-
-  //Desafio  
+  
   const { pathname } = window.location;
 
   // Sistema de paginação temporario.
@@ -40,8 +39,6 @@ const App = () => {
   else {
     Component = Home;
   }
-  //Desafio
-
 
   return (
     <>       

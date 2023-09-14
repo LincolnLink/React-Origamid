@@ -1429,7 +1429,7 @@
 
 </blockquete>
 
-### descobrir depois outras formas de usar o REF, outras propriedades que pode ser manipulada.
+ ### descobrir depois outras formas de usar o REF, outras propriedades que pode ser manipulada.
 
 
 # React Hooks - useMemo
@@ -1821,17 +1821,27 @@
 
         export default useFetch;
 
-
-
 </blockquete>
 
 <blockquete>
 
+        import React from 'react';
+        import useFetch from './useFetch';
 
-</blockquete>
+        const App = () => {
+          const { data, loading, error, request } = useFetch();
 
-<blockquete>
+          React.useEffect(() => {
+            request('https://ranekapi.origamid.dev/json/api/produto/notebook');
+          }, [request]);
 
+          if (error) return <p>{error}</p>;
+          if (loading) return <p>Carregando...</p>;
+          if (data) return <div>{data.nome}</div>;
+          else return null;
+        };
+
+        export default App;
 
 </blockquete>
 
@@ -1847,158 +1857,13 @@
 
  - Cria um efeito para quando valor for modificado, trocar o valor no useState.
 
-<blockquete>
-
-    import React, { useState } from 'react';
-
-    const useLocalStorage = (key, inicial) => {
-      const [state, setState] = useState(() => {
-        const local = window.localStorage.getItem(key);
-
-        return local ? local : inicial;
-      });
-
-
-      useEffect(() => {
-        window.localStorage.setItem(key, state);
-      }, [state, key]);
-
-      return [state, setState];
-    };
-    export default useLocalStorage;
-
-</blockquete>
-
- - Usando o "useLocalStorage"!
-
-<blockquete>
-
-    import './App.css';
-    import React from 'react';
-    import useLocalStorage from './useLocalStorage';
-
-    function App() {
-      const [produto, setProduto] = useLocalStorage('produto', '');
-
-      function handleClick({ target }) {
-        setProduto(target.innerText);
-      }
-
-      return (
-        <div>
-          <p>Produto preferido: {produto}</p>
-          <button onClick={handleClick}>notebook</button>
-          <button onClick={handleClick}>smartphone</button>
-        </div>
-      );
-    }
-
-    export default App;
-
-</blockquete>
-
  - OBS: Para tratar erro de funções asyncornas, se usa TRY E CATCH.
 
  - É possivel descontruir request asyncrinas, porem antes deve ser definido.
 
-# React Hooks - Custom Hooks 2
-
-- Criando um hook personalizado que faz request no banco.
-
-<blockquete>
-
-      import React, { useState } from 'react';
-
-      const useFetch = () => {
-        const [data, setData] = useState(null);
-        const [error, setError] = useState(null);
-        const [loading, setLoading] = useState(null);
-
-        // criar uma função para poder usar na hora que quiser!
-        // O uso perfeito do "useCallback"
-        const request = React.useCallback(async (url, options) => {
-          let response;
-          let json;
-          try {
-            setError(null);
-            setLoading(true);
-            response = await fetch(url, options);
-            json = await response.json();
-            //TODO - explica depois como se trata um retorno errado.
-            setLoading(false);
-          } catch (erro) {
-            json = null;
-            setError('erro');
-          } finally {
-            setData(json);
-            setLoading(false);
-
-            //retorna para o component ter acesso
-            return { response, json };
-          }
-        }, []);
-
-        // Retorna como objeto para não precisar desestruturar
-        // e pode pegar na orem que desejar.
-        return { data, error, loading, request };
-      };
-      export default useFetch;
-
-</blockquete>
-
-- Como o hook personalizado que faz request é chamado.
-
-<blockquete>
-
-    import './App.css';
-    import React, { useEffect } from 'react';
-    import useLocalStorage from './useLocalStorage';
-    import useFetch from './useFetch';
-
-    function App() {
-      const [produto, setProduto] = useLocalStorage('produto', '');
-      const { request, data, loading, error } = useFetch();
-
-      useEffect(() => {
-        async function fetchData() {
-          const { response, json } = await request(
-            'https://ranekapi.origamid.dev/json/api/produto',
-          );
-          console.log(response, json);
-        }
-        fetchData();
-      }, [request]);
-
-      function handleClick({ target }) {
-        setProduto(target.innerText);
-      }
-      if (error) return <p>{error}</p>;
-      if (loading) return <p>Carregando...</p>;
-      if (data)
-        return (
-          <div>
-            <p>Produto preferido: {produto}</p>
-            <button onClick={handleClick}>notebook</button>
-            <button onClick={handleClick}>smartphone</button>
-            <br />
-
-            {data.map((produto) => (
-              <div key={produto.id}>
-                <h1>{produto.nome}</h1>
-              </div>
-            ))}
-          </div>
-        );
-      else return null;
-    }
-
-    export default App;
-
-</blockquete>
-
 # React Hooks - Regras - codigo que retorna erros.
 
-- useEffect não pode ser usado dentro de uma confição.
+- useEffect não pode ser usado dentro de uma condição.
 
 - Não pode usar o useEffect dentro de uma função.
 
@@ -2006,224 +1871,81 @@
 
 - Só pode usar hook dentro de component ou customHook.
 
-- Pode transformar uma função em customHook apenas botando
-  o termo "use" na frente do nome da funcao!
-
-# Form
-
-### Input
-
-- preventDefault() irá prevenir o comportamento padrão, que seria de atualizar a página, enviando uma requisição para o que estiver em
-
-- Não precisa por o evento de submit dentro do botão, ele pode ficar no formulario.
-
-- Para multiplos campos, existe 2 formas.
-
-  - 1: Criando varios "useState" para cada campo.
-  - 2: Criando um objeto com varias propriedades,
-    representando cada campos..
-
-- Desestrutura os valores anteriores e passa os valores novos.
-- Precisa informar o id alem do value.
-
--Exemplo:
+- Pode transformar uma função em customHook apenas botando o termo "use" na frente do nome da funcao!
 
 <blockquete>
 
-          import React, { useState } from 'react';
+        const App = () => {
+          // Correto
+          React.useEffect(() => {
+            document.title = 'Título novo';
+          }, []);
 
-          function App() {
-            // const [nome, setNome] = useState('');
-            const [form, setForm] = useState({
-              nome: '',
-              email: '',
-            });
-
-            //
-            function handleSubmit(event) {
-              event.preventDefault();
-              console.log(event);
-            }
-
-            // Desestrutura os valores anteriores e passa os valores novos.
-            // Precisa informar o id alem do value.
-            function handleChange({ target }) {
-              const { id, value } = target;
-              setForm({ ...form, [id]: value });
-            }
-
-            return (
-              <form onSubmit={handleSubmit}>
-                <label htmlFor="nome">Nome</label>
-                <input
-                  id="nome"
-                  type="text"
-                  name="nome"
-                  value={form.nome}
-                  onChange={handleChange}
-                  //onChange={(event) => setNome(event.target.value)}
-                />
-                {form.nome}
-                <label htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  type="text"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  //onChange={(event) => setEmail(event.target.value)}
-                />
-                {form.email}
-                <button>Enviar</button>
-              </form>
-            );
+          let condicao = true;
+          if (condicao) {
+            // Errado
+            React.useEffect(() => {
+              document.title = 'Título novo';
+            }, []);
           }
 
-          export default App;
+          function mudarTitulo() {
+            // Errado
+            React.useEffect(() => {
+              document.title = 'Título novo';
+            }, []);
+          }
 
-</blockquete>
+          for (let i = 0; i < 10; i++) {
+            // Errado
+            React.useEffect(() => {
+              document.title = 'Título novo';
+            }, []);
+          }
 
-- Uma forma de deixar o formulario generico.
-
-- Cria um array de objetos, botando o id, label e type.
-
-- Use reduce quando for declarar o useState.
-
-<blockquete>
-
-            const [form, setForm] = React.useState(
-              formFields.reduce((acc, field) => {
-                return { ...acc, [field.id]: '' };
-              }, {}),
-            );
-
-</blockquete>
-
-- Use um map no array, para gerar varios input de forma dinamica.
-
-<blockquete>
-
-            <form onSubmit={handleSubmit}>
-                {formFields.map(({ id, label, type }) => (
-                  <div key={id}>
-                    <label htmlFor={id}>{label}</label>
-                    <input
-                      type={type}
-                      id={id}
-                      value={form[id]}
-                      onChange={handleChange}
-                    />
-                  </div>
-                ))}
-                <button>Enviar</button>
-                {response && response.ok && <p>Usuário Criado</p>}
-            </form>
+          return <div></div>;
+        };
 
 </blockquete>
 
 <blockquete>
 
-            import React, { useState } from 'react';
+        import React from 'react';
 
-            const formFields = [
-              {
-                id: 'nome',
-                label: 'Nome',
-                type: 'text',
-              },
-              {
-                id: 'email',
-                label: 'Email',
-                type: 'email',
-              },
-              {
-                id: 'senha',
-                label: 'Senha',
-                type: 'password',
-              },
-              {
-                id: 'cep',
-                label: 'Cep',
-                type: 'text',
-              },
-              {
-                id: 'rua',
-                label: 'Rua',
-                type: 'text',
-              },
-              {
-                id: 'numero',
-                label: 'Numero',
-                type: 'text',
-              },
-              {
-                id: 'bairro',
-                label: 'Bairro',
-                type: 'text',
-              },
-              {
-                id: 'cidade',
-                label: 'Cidade',
-                type: 'text',
-              },
-              {
-                id: 'estado',
-                label: 'Estado',
-                type: 'text',
-              },
-            ];
+        // Errado, mas pode se transformar em um custom hook se começar com useNumeroAleatorio
+        function numeroAleatorio() {
+          const numero = Math.random();
+          React.useEffect(() => {
+            document.title = numero;
+          }, []);
+          return numero;
+        }
 
-            function Input02() {
-              const [form, setForm] = React.useState(
-                formFields.reduce((acc, field) => {
-                  return { ...acc, [field.id]: '' };
-                }, {}),
-              );
+        const App = () => {
+          return <div></div>;
+        };
 
-              const [response, setResponse] = useState(null);
+        export default App;
 
-              function handleSubmit(event) {
-                //??
-                event.preventDefault();
-                fetch('https://ranekapi.origamid.dev/json/api/usuario', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  //converte para JSON
-                  body: JSON.stringify(form),
-                }).then((response) => {
-                  setResponse(response);
-                });
-              }
+</blockquete>
 
-              function handleChange({ target }) {
-                const { id, value } = target;
-                setForm({ ...form, [id]: value });
-              }
-              return (
-                <>
-                  <p>Input - conceitos basicos - parte 2</p>
-                  <form onSubmit={handleSubmit}>
-                    {formFields.map(({ id, label, type }) => (
-                      <div key={id}>
-                        <label htmlFor={id}>{label}</label>
-                        <input
-                          type={type}
-                          id={id}
-                          value={form[id]}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    ))}
-                    <button>Enviar</button>
-                    {response && response.ok && <p>Usuário Criado</p>}
-                  </form>
-                </>
-              );
-            }
+# Formulários - Input
 
-            export default Input02;
+ - 
+
+<blockquete>
+
+</blockquete>
+
+ - 
+
+<blockquete>
+
+</blockquete>
+
+ - 
+
+<blockquete>
 
 </blockquete>
 
