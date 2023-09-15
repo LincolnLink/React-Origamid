@@ -1745,6 +1745,8 @@
 
  ### useLocalStorage
 
+ - Valores de "localStorage" é salvo como string.
+
  - Podemos criar nossos próprios hooks, assim evitamos a repetição de código. Todo custom hook deve começar com a palavra use. Exemplo: useNomeDoHook. Podemos retornar o que quisermos do hook, seja um valor único, uma array ou um objeto.
 
 <blockquete>
@@ -1787,6 +1789,14 @@
 </blockquete>
 
  - useFetch: Aqui o useCallback é necessário para evitar um render infinito.
+
+ - retorna como objeto, porque pode desestruturar em qualquer ordem.
+
+ - Para evitar usar o ".then()", use o async/awaith.
+
+ - Aula: https://www.youtube.com/watch?v=Z5D_Jj6JStw 
+
+ - Para lidar com erros de função asyncronas, é usando o Try e Catch. 
 
 <blockquete>
 
@@ -1931,23 +1941,360 @@
 
 # Formulários - Input
 
- - 
+ ### Reatividade
+ 
+ - Para criarmos campos de formulário reativos, devemos definir o estado para o value e a função atualizadora para o onChange.
+ 
+ - O atributo for é usado como htmlFor no JSX.
 
 <blockquete>
 
+      const App = () => {
+        const [nome, setNome] = React.useState('');
+
+        return (
+          <form>
+            <label htmlFor="nome">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              value={nome}
+              onChange={(event) => setNome(event.target.value)}
+            />
+            <p>{nome}</p>
+          </form>
+        );
+      };
+
 </blockquete>
 
- - 
+ ### Form
+
+ - No form controlamos o que acontece ao enviar o mesmo, por isso definimos uma função para lidar com o onSubmit. O preventDefault() irá prevenir o comportamento padrão, que seria de atualizar a página, enviando uma requisição para o que estiver em action="".
 
 <blockquete>
 
+      const App = () => {
+        const [nome, setNome] = React.useState('');
+
+        function handleSubmit(event) {
+          event.preventDefault();
+          console.log(nome);
+        }
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="nome">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              value={nome}
+              onChange={(event) => setNome(event.target.value)}
+            />
+            <button>Enviar</button>
+          </form>
+        );
+      };
+
 </blockquete>
 
- - 
+ ### Múltiplos Campos
+
+ - Podemos definir um estado para cada campo.
 
 <blockquete>
 
+      const App = () => {
+        const [nome, setNome] = React.useState('');
+        const [email, setEmail] = React.useState('');
+
+        function handleSubmit(event) {
+          event.preventDefault();
+          console.log(nome, email);
+        }
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="nome">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              value={nome}
+              onChange={(event) => setNome(event.target.value)}
+            />
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <button>Enviar</button>
+          </form>
+        );
+      };
+
 </blockquete>
+
+ ### Objeto
+
+ - Podemos definir um objeto que irá conter todos os valores dos campos do formulário.
+ 
+<blockquete>
+
+      const App = () => {
+        const [form, setForm] = React.useState({
+          nome: '',
+          email: '',
+        });
+
+        function handleSubmit(event) {
+          event.preventDefault();
+          console.log(form);
+        }
+
+        function handleChange({ target }) {
+          const { id, value } = target;
+          setForm({ ...form, [id]: value });
+        }
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="nome">Nome</label>
+            <input type="text" id="nome" value={form.nome} onChange={handleChange} />
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={form.email}
+              onChange={handleChange}
+            />
+            <button>Enviar</button>
+          </form>
+        );
+      };
+
+</blockquete>
+
+ ### Exercício
+ 
+<blockquete>
+
+      // Faça um fetch (POST) para a API abaixo
+      // Para a criação ser aceita é necessário enviar dodos de:
+      // nome, email, senha, cep, rua, numero, bairro, cidade e estado
+
+      // Essa é a função utilizado para realizar o POST
+      fetch('https://ranekapi.origamid.dev/json/api/usuario', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // form é o objeto com os dados do formulário
+        body: JSON.stringify(form),
+      });
+
+      // Mostre uma mensagem na tela, caso a resposta da API seja positiva
+
+</blockquete>
+
+<blockquete>
+
+        import React from 'react';
+
+        const App = () => {
+          const [form, setForm] = React.useState({
+            nome: '',
+            email: '',
+            senha: '',
+            cep: '',
+            rua: '',
+            numero: '',
+            bairro: '',
+            cidade: '',
+            estado: '',
+          });
+
+          const [response, setResponse] = React.useState(null);
+
+          function handleSubmit(event) {
+            event.preventDefault();
+          fetch('https://ranekapi.origamid.dev/json/api/usuario', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+          }).then((response) => {
+            setResponse(response);
+          });
+        }
+
+        function handleChange({ target }) {
+          const { id, value } = target;
+          setForm({ ...form, [id]: value });
+        }
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="nome">Nome</label>
+            <input type="text" id="nome" value={form.nome} onChange={handleChange} />
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={form.email}
+              onChange={handleChange}
+            />
+            <label htmlFor="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              value={form.senha}
+              onChange={handleChange}
+            />
+            <label htmlFor="cep">Cep</label>
+            <input type="text" id="cep" value={form.cep} onChange={handleChange} />
+            <label htmlFor="senha">Rua</label>
+            <input type="text" id="rua" value={form.rua} onChange={handleChange} />
+            <label htmlFor="numero">Número</label>
+            <input
+              type="text"
+              id="numero"
+              value={form.numero}
+              onChange={handleChange}
+            />
+            <label htmlFor="bairro">Bairro</label>
+            <input
+              type="text"
+              id="bairro"
+              value={form.bairro}
+              onChange={handleChange}
+            />
+            <label htmlFor="cidade">Cidade</label>
+            <input
+              type="text"
+              id="cidade"
+              value={form.cidade}
+              onChange={handleChange}
+            />
+            <label htmlFor="estado">Estado</label>
+            <input
+              type="text"
+              id="estado"
+              value={form.estado}
+              onChange={handleChange}
+            />
+            <button>Enviar</button>
+            {response && response.ok && <p>Usuário Criado</p>}
+          </form>
+        );
+      };
+
+      export default App;
+
+</blockquete>
+
+ - Alternativa
+ 
+<blockquete>
+
+      import React from 'react';
+
+      const formFields = [
+        {
+          id: 'nome',
+          label: 'Nome',
+          type: 'text',
+        },
+        {
+          id: 'email',
+          label: 'Email',
+          type: 'email',
+        },
+        {
+          id: 'senha',
+          label: 'Senha',
+          type: 'password',
+        },
+        {
+          id: 'cep',
+          label: 'Cep',
+          type: 'text',
+        },
+        {
+          id: 'rua',
+          label: 'Rua',
+          type: 'text',
+        },
+        {
+          id: 'numero',
+          label: 'Numero',
+          type: 'text',
+        },
+        {
+          id: 'bairro',
+          label: 'Bairro',
+          type: 'text',
+        },
+        {
+          id: 'cidade',
+          label: 'Cidade',
+          type: 'text',
+        },
+        {
+          id: 'estado',
+          label: 'Estado',
+          type: 'text',
+        },
+      ];
+
+      const App = () => {
+        const [form, setForm] = React.useState(
+          formFields.reduce((acc, field) => {
+            return { ...acc, [field.id]: '' };
+          }, {}),
+        );
+
+        const [response, setResponse] = React.useState(null);
+
+        function handleSubmit(event) {
+          event.preventDefault();
+          fetch('https://ranekapi.origamid.dev/json/api/usuario', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+          }).then((response) => {
+            setResponse(response);
+          });
+        }
+
+        function handleChange({ target }) {
+          const { id, value } = target;
+          setForm({ ...form, [id]: value });
+        }
+
+        return (
+          <form onSubmit={handleSubmit}>
+            {formFields.map(({ id, label, type }) => (
+              <div key={id}>
+                <label htmlFor={id}>{label}</label>
+                <input type={type} id={id} value={form[id]} onChange={handleChange} />
+              </div>
+            ))}
+            <button>Enviar</button>
+            {response && response.ok && <p>Usuário Criado</p>}
+          </form>
+        );
+      };
+
+      export default App;
+
+
+</blockquete>
+
 
 ### TextArea
 

@@ -6,8 +6,12 @@ const App02 = () => {
 
   React.useEffect(() => {
     request('https://ranekapi.origamid.dev/json/api/produto/notebook');
+
+    console.log("teste: ", data);
+
   }, [request]);
 
+  console.log("teste: ", data);
   if (error) return <p>{error}</p>;
   if (loading) return <p>Carregando...</p>;
   if (data) return <div>{data.nome}</div>;
