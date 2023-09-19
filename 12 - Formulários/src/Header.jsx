@@ -9,7 +9,10 @@ const Header = () => {
         </li>
         <li>
           <a href="/input">Input</a>
-        </li>        
+        </li> 
+        <li>
+          <a href="/textarea">Textarea</a>
+        </li>                
       </ul>
     </header>
   );

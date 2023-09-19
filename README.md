@@ -2296,14 +2296,27 @@
 </blockquete>
 
 
-### TextArea
+# Formulários - TextArea
 
-- Não precisa fechar
+ - No React o textarea é utilizado como um input, uma tag única sem abertura/fechamento e com o value para definir o seu valor interno.
 
 <blockquete>
 
-            <textarea value={textarea}> onChange={({tareget})=>setTextearea(target.value)}
-            rowns="5" />
+        const App = () => {
+        const [mensagem, setMensagem] = React.useState('');
+
+        return (
+          <form>
+            <textarea
+              id="mensagem"
+              value={mensagem}
+              rows="5"
+              onChange={({ target }) => setMensagem(target.value)}
+            />
+            <p>{mensagem}</p>
+          </form>
+        );
+      };
 
 </blockquete>
 

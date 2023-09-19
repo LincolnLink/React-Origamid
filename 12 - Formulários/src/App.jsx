@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Home from './Home';
 import Input from './Forms/Input/input';
+import Textarea from './Forms/Textarea/Textarea';
 
 
 const App = () => {
@@ -13,8 +14,8 @@ const App = () => {
   if (pathname === '/input') {
     Component = Input;
   }
-  else if(pathname === '/input'){
-    Component = Input;
+  else if(pathname === '/textarea'){
+    Component = Textarea;
   }
   else {
     Component = Home;
