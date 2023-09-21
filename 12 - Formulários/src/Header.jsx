@@ -12,7 +12,19 @@ const Header = () => {
         </li> 
         <li>
           <a href="/textarea">Textarea</a>
-        </li>                
+        </li>
+        <li>
+          <a href="/select">Select</a>
+        </li>
+        <li>
+          <a href="/radio">Radio</a>  
+        </li>    
+        <li>
+          <a href="/checkbox">Checkbox</a>  
+        </li>
+        <li>
+          <a href="/componentes"></a>
+        </li>   
       </ul>
     </header>
   );

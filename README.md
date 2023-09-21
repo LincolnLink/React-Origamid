@@ -2320,32 +2320,139 @@
 
 </blockquete>
 
-### Select
+# Formulários - Select
 
-- Uma forma de criar um select, com a primeira opção vazia
+ - O value e onChange são definidos no select. Para definir um valor inicial, coloque o mesmo no useState.
 
 <blockquete>
 
-      <select value={select} onChange={({ target }) => setSelect(target.value)}>
-              <option value="" disabled>
-                Selecione
-              </option>
-              <option value="notebook">Notebook</option>
-              <option value="smartphone">Smartphone</option>
-              <option value="tablet">Tablet</option>
-            </select>
-            <p>{select}</p>
+        const App = () => {
+          const [select, setSelect] = React.useState('smartphone');
+
+          return (
+            <form>
+              <select value={select} onChange={({ target }) => setSelect(target.value)}>
+                <option value="notebook">Notebook</option>
+                <option value="smartphone">Smartphone</option>
+                <option value="tablet">Tablet</option>
+              </select>
+              <p>{select}</p>
+            </form>
+          );
+        };
 
 </blockquete>
 
-### RaioButtom
+ - Selecione
+ 
+<blockquete>
 
-- Pode ser usado o checked ou o name para verificar.
-- https://www.origamid.com/slide/react-completo/#/0404-radio/3
+        const App = () => {
+          const [select, setSelect] = React.useState('');
+
+          return (
+            <form>
+              <select value={select} onChange={({ target }) => setSelect(target.value)}>
+                <option value="" disabled>
+                  Selecione
+                </option>
+                <option value="notebook">Notebook</option>
+                <option value="smartphone">Smartphone</option>
+                <option value="tablet">Tablet</option>
+              </select>
+              <p>{select}</p>
+            </form>
+          );
+        };
+
+</blockquete>
+
+
+# Formulários - RaioButtom
+
+ - No radio comparamos o valor selecionado com o valor do input, dentro do atributo checked. O que retornar true irá marcar o botão.
+
+ - O que é reativo é o que está checado.
+
+ - Bota o input dentro da label.
+
+ - O grupo deve ter nome igual nos input ou checa se está checado igual no exemplo.
+ 
+<blockquete>
+
+        const App = () => {
+          const [radio, setRadio] = React.useState('');
+
+          function handleChange({ target }) {
+            setRadio(target.value);
+          }
+
+          return (
+            <form>
+              <label>
+                <input
+                  type="radio"
+                  value="notebook"
+                  checked={radio === 'notebook'}
+                  onChange={handleChange}
+                />
+                Notebook
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="smartphone"
+                  checked={radio === 'smartphone'}
+                  onChange={handleChange}
+                />
+                Smartphone
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="tablet"
+                  checked={radio === 'tablet'}
+                  onChange={handleChange}
+                />
+                Tablet
+              </label>
+            </form>
+          );
+        };
+
+</blockquete>
+
+ - Defina um estado para cada grupo.
 
 <blockquete>
 
-        <h2>Cor</h2>
+        const App = () => {
+          const [produto, setProduto] = React.useState('');
+          const [cor, setCor] = React.useState('');
+
+          return (
+            <form>
+              <h2>Dispositivo</h2>
+              <label>
+                <input
+                  type="radio"
+                  value="notebook"
+                  checked={produto === 'notebook'}
+                  onChange={({ target }) => setProduto(target.value)}
+                />
+                Notebook
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="smartphone"
+                  checked={produto === 'smartphone'}
+                  onChange={({ target }) => setProduto(target.value)}
+                />
+                Smartphone
+              </label>
+
+              <h2>Cor</h2>
               <label>
                 <input
                   type="radio"
@@ -2364,168 +2471,149 @@
                 />
                 Vermelho
               </label>
-
-</blockquete>
-
-### Checkbox
-
-- exemplo de apenas um selecionado e de multiplos
-
-- https://www.origamid.com/slide/react-completo/#/0405-checkbox/1
-
-- praticar mais em casos reais.
-
-# Conceito de component generico
-
-### componet generico input
-
-- nomes de valores iguais as propriedade, pode desestruturar.
-
-- component input generico
-
-<blockquete>
-
-        const InputGenerico = ({ id, label, setValue, value, ...props }) => {
-          return (
-            <div>
-              <label htmlFor={id}>{label}</label>
-              <input
-                type="text"
-                id={id}
-                name={id}
-                value={value}
-                onChange={({ target }) => setValue(target.value)}
-                {...props}
-              />
-              <br />
-            </div>
+            </form>
           );
         };
 
-        export default InputGenerico;
+</blockquete>
+
+# Formulários - Checkbox
+
+ - O estado do checkbox está relacionado ao checked.
+
+ - O estado é baseado no checked e não no value.
+
+ - Caso tenha valores iguais, pode usar index do map.
+ 
+<blockquete>
+
+        const App = () => {
+        const [checkbox, setCheckbox] = React.useState(false);
+
+        function handleChange({ target }) {
+          setCheckbox(target.checked);
+        }
+
+        return (
+          <form>
+            <label>
+              <input
+                type="checkbox"
+                value="termos"
+                checked={checkbox}
+                onChange={handleChange}
+              />
+              Li os termos.
+            </label>
+          </form>
+        );
+      };
 
 </blockquete>
 
-### component generico select
-
-- Quem realmente inicia o valor do select é a propriedade "value" .
-
-- Passa as propriedade do useState para o select ficar reativo, value com value, e setValue com o onChance passando o target desestruturado.
-
-- exemplo:
+ - Múltiplos: Podemos definir um estado para cada item ou uma array que irá conter todos os itens selecionados.
 
 <blockquete>
 
-          import React, { useState } from 'react';
-          import './style.css';
+        const App = () => {
+          const [cores, setCores] = React.useState([]);
 
-          const SelectGenerico = ({ label, options, value, setValue, ...props }) => {
-            return (
-              <div>
-                <label>{label}</label>
+          function handleChange({ target }) {
+            if (target.checked) {
+              setCores([...cores, target.value]);
+            } else {
+              setCores(cores.filter((cor) => cor !== target.value));
+            }
+          }
 
-                <select
-                  value={value}
-                  onChange={({ target }) => setValue(target.value)}
-                  {...props}
-                >
-                  <option value="" disabled>
-                    Selecione
-                  </option>
+          function handleChecked(cor) {
+            return cores.includes(cor);
+          }
 
-                  {options.map((op) => (
-                    <option key={op} value={op}>
-                      {op}
-                    </option>
-                  ))}
-                </select>
-
-                <br />
-              </div>
-            );
-          };
-
-          export default SelectGenerico;
-
-</blockquete>
-
-### component generico Radio
-
-- A reatividade do radio, está vinculado com o checkd,
-  se ele está checado ou não.
-
-<blockquete>
-
-          import React, { useState } from 'react';
-          //import './style.css';
-
-          const RadioGenerico = ({ options, value, label, setValue, ...props }) => {
-            return (
-              <>
-                <h5>{label}</h5>
-                {options.map((option) => (
-                  <label key={option}>
-                    <br />
-                    <input
-                      type="radio"
-                      value={option}
-                      checked={value == option}
-                      onChange={({ target }) => setValue(target.value)}
-                      {...props}
-                    />
-                    {option}
-                  </label>
+          return (
+            <form>
+              <label>
+                <input
+                  type="checkbox"
+                  value="azul"
+                  checked={handleChecked('azul')}
+                  onChange={handleChange}
+                />
+                Azul
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="vermelho"
+                  checked={handleChecked('vermelho')}
+                  onChange={handleChange}
+                />
+                Vermelho
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="verde"
+                  checked={handleChecked('verde')}
+                  onChange={handleChange}
+                />
+                Verde
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="amarelo"
+                  checked={handleChecked('amarelo')}
+                  onChange={handleChange}
+                />
+                Amarelo
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="roxo"
+                  checked={handleChecked('roxo')}
+                  onChange={handleChange}
+                />
+                Roxo
+              </label>
+              <ul>
+                {cores.map((cor) => (
+                  <li key={cor}>{cor}</li>
                 ))}
-              </>
-            );
-          };
-
-          export default RadioGenerico;
+              </ul>
+            </form>
+          );
+        };
 
 </blockquete>
 
-### component generico Checkbox
+# Formulários - Component Generico
 
-- Exemplo
+ ### Input
+
+ - Podemos definir um componente para cada tipo de campo de formulário, assim evitamos criar código repetido. 
 
 <blockquete>
 
-            import React from 'react';
-            //import './style.css';
-
-            const CheckBoxGenerico = ({ options, setValue, value }) => {
-              //id, label, setValue, value, ...props
-
-              function handleChange({ target }) {
-                if (target.checked) {
-                  setValue([...value, target.value]);
-                } else {
-                  setValue(value.filter((itemValue) => itemValue !== target.value));
-                }
-              }
-
-              return (
-                <div>
-                  {options.map((option) => (
-                    <label key={option}>
-                      <input
-                        type="checkbox"
-                        value={option}
-                        checked={value.includes(option)}
-                        onChange={handleChange}
-                      />
-                      {option}
-                    </label>
-                  ))}
-                </div>
-              );
-            };
-
-            export default CheckBoxGenerico;
+      const Input = ({ id, label, setValue, ...props }) => {
+        return (
+          <>
+            <label htmlFor={id}>{label}</label>
+            <input
+              id={id}
+              name={id}
+              onChange={({ target }) => setValue(target.value)}
+              {...props}
+            />
+          </>
+        );
+      };
 
 </blockquete>
 
-### Validação
+
+# Formulários - Validação
 
 - o Onchange foi definido do lado de fora/ dolado do pai, porq
   foi mostrata uma validação de dados no pai, esse exemplo é provisorio.
