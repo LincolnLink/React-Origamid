@@ -2612,47 +2612,383 @@
 
 </blockquete>
 
-
-# Formulários - Validação
-
-- o Onchange foi definido do lado de fora/ dolado do pai, porq
-  foi mostrata uma validação de dados no pai, esse exemplo é provisorio.
-
-- proxima aula, vai ser definido o onchangem dentro do filho/ dolado de
-  dentro, usando um hook.
-
-- 3 Momentos da validação, quando perde o foco, quando muda o valor,
-  e quando envia.
-
-### Validação usando hook(validação dinamica) !
-
-- Criado um Hook do zero para validar.
-
-- No hook não retorna elemento, retorna partes
-  especificas que for preciso.
-
-- A const Types é um objeto, que tem dentro dela
-  uma "lista" de objetos, com essa const, vocÊ tem acesso
-  a outros objetos que serve para tipar, tornando o hook/
-  função dinamica, aonde é passado apenas o nome do objeto,
-  com esse nome ele tem diferentes calculos/funções.
-
-- Pode buscar um regex da internet para validar por exemplo email.
-
-- Criando um formulario sem a validação.
-
-### Desafio Formulários
-
--
-
--
+ - Quando o componente é usado.
 
 <blockquete>
+
+        const App = () => {
+        const [nome, setNome] = React.useState('');
+
+          return (
+            <form>
+              <Input
+                label="Nome"
+                id="nome"
+                type="text"
+                value={nome}
+                setValue={setNome}
+              />
+            </form>
+          );
+        };
 
 </blockquete>
 
--
+ ### Select
 
 <blockquete>
+
+      const Select = ({ options, value, setValue, ...props }) => {
+        return (
+          <select
+            value={value}
+            onChange={({ target }) => setValue(target.value)}
+            {...props}
+          >
+            <option value="" disabled>
+              Selecione
+            </option>
+            {options.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        );
+      };
+
+</blockquete>
+
+ - Quando o componente é usado.
+ 
+<blockquete>
+
+        const App = () => {
+          const [produto, setProduto] = React.useState('');
+
+          return (
+            <form>
+              <Select
+                options={['Notebook', 'Smartphone', 'Tablet']}
+                value={produto}
+                setValue={setProduto}
+              />
+            </form>
+          );
+        };
+
+</blockquete>
+
+ ### Radio
+
+<blockquete>
+
+        const Radio = ({ options, value, setValue, ...props }) => {
+          return (
+            <>
+              {options.map((option) => (
+                <label key={option}>
+                  <input
+                    type="radio"
+                    value={option}
+                    checked={value === option}
+                    onChange={({ target }) => setValue(target.value)}
+                    {...props}
+                  />
+                  {option}
+                </label>
+              ))}
+            </>
+          );
+        };
+
+</blockquete>
+
+ - Quando o componente é usado.
+ 
+<blockquete>
+
+        const App = () => {
+          const [cor, setCor] = React.useState('');
+
+          return (
+            <form>
+              <Radio
+                options={['azul', 'verde', 'amarelo']}
+                value={cor}
+                setValue={setCor}
+              />
+            </form>
+          );
+        };
+ 
+ </blockquete>
+
+ ### Check
+  
+<blockquete>
+
+        const Checkbox = ({ options, value, setValue }) => {
+          function handleChange({ target }) {
+            if (target.checked) {
+              setValue([...value, target.value]);
+            } else {
+              setValue(value.filter((cor) => cor !== target.value));
+            }
+          }
+
+          return (
+            <>
+              {options.map((option) => (
+                <label key={option}>
+                  <input
+                    type="checkbox"
+                    value={option}
+                    checked={value.includes(option)}
+                    onChange={handleChange}
+                  />
+                  {option}
+                </label>
+              ))}
+            </>
+          );
+        };
+ 
+</blockquete>
+
+ - Quando o componente é usado.
+
+<blockquete>
+
+        const App = () => {
+          const [fruta, setFruta] = React.useState([]);
+          const [termos, setTermos] = React.useState([]);
+
+          return (
+            <form>
+              <Checkbox
+                options={['Uva', 'Laranja', 'Limão']}
+                value={fruta}
+                setValue={setFruta}
+              />
+
+              <Checkbox
+                options={['Termos e Condições']}
+                value={termos}
+                setValue={setTermos}
+              />
+            </form>
+          );
+        };
+ 
+</blockquete>
+
+ 
+# Formulários - Validação
+
+  ### onBlur
+
+ - O onBlur é ativado sempre que o campo fica fora de foco, momento perfeito para validarmos o dado do campo. A validação pode ser feita com JavaScript utilizando REGEX.
+
+<blockquete>
+
+        const App = () => {
+          const [cep, setCep] = React.useState('');
+          const [error, setError] = React.useState(null);
+
+          function validateCep(value) {
+            if (value.length === 0) {
+              setError('Preencha um valor');
+              return false;
+            } else if (!/^\d{5}-?\d{3}$/.test(value)) {
+              setError('Preencha um cep válido');
+              return false;
+            } else {
+              setError(null);
+              return true;
+            }
+          }
+
+          function handleBlur({ target }) {
+            validateCep(target.value);
+          }
+
+          function handleChange({ target }) {
+            if (error) validateCep(target.value);
+            setCep(target.value);
+          }
+
+          return (
+            <form>
+              <Input
+                label="CEP"
+                id="cep"
+                type="text"
+                value={cep}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {error && <p>{error}</p>}
+              <button>Enviar</button>
+            </form>
+          );
+        };
+
+</blockquete>
+ 
+ ### onSubmit
+
+ - Devemos impedir o envio do formulário caso exista erro no preenchimento.
+
+<blockquete>
+
+        const App = () => {
+          const [cep, setCep] = React.useState('');
+          const [error, setError] = React.useState(null);
+
+          function handleSubmit(event) {
+            event.preventDefault();
+            if (validateCep(cep)) {
+              console.log('Enviar');
+            } else {
+              console.log('Não enviar');
+            }
+          }
+
+          function validateCep(value) {
+            if (value.length === 0) {
+              setError('Preencha um valor');
+              return false;
+            } else if (!/^\d{5}-?\d{3}$/.test(value)) {
+              setError('Preencha um cep válido');
+              return false;
+            } else {
+              setError(null);
+              return true;
+            }
+          }
+
+          function handleBlur({ target }) {
+            validateCep(target.value);
+          }
+
+          function handleChange({ target }) {
+            if (error) validateCep(target.value);
+            setCep(target.value);
+          }
+
+          return (
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="cep">Cep</label>
+              <input
+                id="cep"
+                type="text"
+                value={cep}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="00000-000"
+              />
+              {error && <p>{error}</p>}
+              <button>Enviar</button>
+            </form>
+          );
+        };
+
+</blockquete>
+
+# Formulários - useForm
+
+ - Podemos definir um custom hook para formulários.
+
+<blockquete>
+
+        import React from 'react';
+
+        const types = {
+          cep: {
+            regex: /^\d{5}-?\d{3}$/,
+            message: 'Cep inválido',
+          },
+          email: {
+            regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            message: 'Email inválido',
+          },
+        };
+
+        const useForm = (type) => {
+          const [value, setValue] = React.useState('');
+          const [error, setError] = React.useState(null);
+
+          function validate(value) {
+            if (type === false) return true;
+            if (value.length === 0) {
+              setError('Preencha um valor');
+              return false;
+            } else if (types[type] && !types[type].regex.test(value)) {
+              setError(types[type].message);
+              return false;
+            } else {
+              setError(null);
+              return true;
+            }
+          }
+
+          function onChange({ target }) {
+            if (error) validate(target.value);
+            setValue(target.value);
+          }
+
+          return {
+            value,
+            setValue,
+            error,
+            onChange,
+            onBlur: () => validate(value),
+            validate: () => validate(value),
+          };
+        };
+
+        export default useForm;
+
+
+
+</blockquete>
+
+ - 
+
+<blockquete>
+
+        import React from 'react';
+
+        const Input = ({
+          id,
+          label,
+          value,
+          type,
+          onChange,
+          error,
+          onBlur,
+          placeholder,
+        }) => {
+          return (
+            <>
+              <label htmlFor={id}>{label}</label>
+              <input
+                type={type}
+                id={id}
+                name={id}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                placeholder={placeholder}
+              />
+              {error && <p>{error}</p>}
+            </>
+          );
+        };
+
+        export default Input;
+
+
 
 </blockquete>

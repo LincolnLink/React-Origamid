@@ -7,7 +7,8 @@ import Select from './Forms/Select/Select';
 import Radio from './Forms/Radio/Radio';
 import Checkbox from './Forms/Checkbox/Checkbox';
 import Componentes from './Forms/Componentes/Componentes';
-
+import Validacao from './Forms/Validacao/Validacao';
+import UseForm from './Forms/UseForm/UseForm';
 
 const App = () => {
   
@@ -30,8 +31,14 @@ const App = () => {
   else if(pathname ==='/checkbox'){
     Component = Checkbox
   }
-  else if(pathname === '/componentes '){
+  else if(pathname === '/componentes'){
     Component = Componentes 
+  }
+  else if(pathname === '/validacao'){
+    Component = Validacao
+  }
+  else if(pathname === '/useForm'){
+    Component = UseForm
   }
   else {
     Component = Home;

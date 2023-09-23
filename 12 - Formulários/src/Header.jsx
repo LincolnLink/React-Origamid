@@ -23,8 +23,14 @@ const Header = () => {
           <a href="/checkbox">Checkbox</a>  
         </li>
         <li>
-          <a href="/componentes"></a>
-        </li>   
+          <a href="/componentes">Componentes Genericos</a>
+        </li>
+        <li>
+          <a href="/validacao">Validacao</a>
+        </li>
+        <li>
+          <a href="/useForm">UseForm</a>
+        </li>
       </ul>
     </header>
   );
