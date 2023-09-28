@@ -2592,7 +2592,9 @@
 
  ### Input
 
- - Podemos definir um componente para cada tipo de campo de formulário, assim evitamos criar código repetido. 
+ - Podemos definir um componente para cada tipo de campo de formulário, assim evitamos criar código repetido.
+
+ - O estado é sempre dolado de fora.
 
 <blockquete>
 
@@ -2790,6 +2792,8 @@
 
  - O onBlur é ativado sempre que o campo fica fora de foco, momento perfeito para validarmos o dado do campo. A validação pode ser feita com JavaScript utilizando REGEX.
 
+ - Só valida depois que ele terminar e verifica se teve erro.
+
 <blockquete>
 
         const App = () => {
@@ -2900,6 +2904,10 @@
 
  - Podemos definir um custom hook para formulários.
 
+ - Cria uma validação dinamica, vai depender do tipo da validação.
+
+ - É tratado quando não tem validação, no caso quando nao tem tipo.
+
 <blockquete>
 
         import React from 'react';
@@ -2950,8 +2958,6 @@
 
         export default useForm;
 
-
-
 </blockquete>
 
  - 
@@ -2989,6 +2995,270 @@
 
         export default Input;
 
+</blockquete>
 
+ - App
+
+<blockquete>
+
+          import React from 'react';
+          import Input from './Form/Input';
+          import useForm from './Hooks/useForm';
+
+          const App = () => {
+            const cep = useForm('cep');
+
+            function handleSubmit(event) {
+              event.preventDefault();
+              if (cep.validate()) {
+                console.log('Enviar');
+              } else {
+                console.log('Não enviar');
+              }
+            }
+
+            return (
+              <form onSubmit={handleSubmit}>
+                <Input
+                  label="CEP"
+                  id="cep"
+                  type="text"
+                  placeholder="00000-000"
+                  {...cep}
+                />
+                <button>Enviar</button>
+              </form>
+            );
+          };
+
+          export default App;
+
+</blockquete>
+
+
+# Desafio Formulários
+
+ - fieldset : agrupa campos de formulartio(HTML)
+
+ - Perguntas
+
+<blockquete>
+
+      const perguntas = [
+        {
+          pergunta: 'Qual método é utilizado para criar componentes?',
+          options: [
+            'React.makeComponent()',
+            'React.createComponent()',
+            'React.createElement()',
+          ],
+          resposta: 'React.createElement()',
+          id: 'p1',
+        },
+        {
+          pergunta: 'Como importamos um componente externo?',
+          options: [
+            'import Component from "./Component"',
+            'require("./Component")',
+            'import "./Component"',
+          ],
+          resposta: 'import Component from "./Component"',
+          id: 'p2',
+        },
+        {
+          pergunta: 'Qual hook não é nativo?',
+          options: ['useEffect()', 'useFetch()', 'useCallback()'],
+          resposta: 'useFetch()',
+          id: 'p3',
+        },
+        {
+          pergunta: 'Qual palavra deve ser utilizada para criarmos um hook?',
+          options: ['set', 'get', 'use'],
+          resposta: 'use',
+          id: 'p4',
+        },
+      ];
+
+</blockquete>
+
+- Solução (app)
+
+<blockquete>
+
+          import React from 'react';
+          import Radio from './Form/Radio';
+
+          const perguntas = [
+            {
+              pergunta: 'Qual método é utilizado para criar componentes?',
+              options: [
+                'React.makeComponent()',
+                'React.createComponent()',
+                'React.createElement()',
+              ],
+              resposta: 'React.createElement()',
+              id: 'p1',
+            },
+            {
+              pergunta: 'Como importamos um componente externo?',
+              options: [
+                'import Component from "./Component"',
+                'require("./Component")',
+                'import "./Component"',
+              ],
+              resposta: 'import Component from "./Component"',
+              id: 'p2',
+            },
+            {
+              pergunta: 'Qual hook não é nativo?',
+              options: ['useEffect()', 'useFetch()', 'useCallback()'],
+              resposta: 'useFetch()',
+              id: 'p3',
+            },
+            {
+              pergunta: 'Qual palavra deve ser utilizada para criarmos um hook?',
+              options: ['set', 'get', 'use'],
+              resposta: 'use',
+              id: 'p4',
+            },
+          ];
+
+          const App = () => {
+            const [respostas, setRespostas] = React.useState({
+              p1: '',
+              p2: '',
+              p3: '',
+              p4: '',
+            });
+            const [slide, setSlide] = React.useState(0);
+            const [resultado, setResultado] = React.useState(null);
+
+            function handleChange({ target }) {
+              setRespostas({ ...respostas, [target.id]: target.value });
+            }
+
+            function resultadoFinal() {
+              const corretas = perguntas.filter(
+                ({ id, resposta }) => respostas[id] === resposta,
+              );
+              setResultado(`Você acertou: ${corretas.length} de ${perguntas.length}`);
+            }
+
+            function handleClick() {
+              if (slide < perguntas.length - 1) {
+                setSlide(slide + 1);
+              } else {
+                setSlide(slide + 1);
+                resultadoFinal();
+              }
+            }
+
+            return (
+              <form onSubmit={(event) => event.preventDefault()}>
+                {perguntas.map((pergunta, index) => (
+                  <Radio
+                    active={slide === index}
+                    key={pergunta.id}
+                    value={respostas[pergunta.id]}
+                    onChange={handleChange}
+                    {...pergunta}
+                  />
+                ))}
+                {resultado ? (
+                  <p>{resultado}</p>
+                ) : (
+                  <button onClick={handleClick}>Próxima</button>
+                )}
+              </form>
+            );
+          };
+
+          export default App;
+
+</blockquete>
+
+- Radio
+
+<blockquete>
+
+            import React from 'react';
+
+            const Radio = ({ pergunta, options, onChange, value, id, active }) => {
+              if (active === false) return null;
+              return (
+                <fieldset
+                  style={{
+                    padding: '2rem',
+                    marginBottom: '1rem',
+                    border: '2px solid #eee',
+                  }}
+                >
+                  <legend style={{ fontWeight: 'bold' }}>{pergunta}</legend>
+                  {options.map((option) => (
+                    <label
+                      key={option}
+                      style={{ marginBottom: '1rem', fontFamily: 'monospace' }}
+                    >
+                      <input
+                        type="radio"
+                        id={id}
+                        checked={value === option}
+                        value={option}
+                        onChange={onChange}
+                      />
+                      {option}
+                    </label>
+                  ))}
+                </fieldset>
+              );
+            };
+
+            export default Radio;
+
+</blockquete>
+
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
+
+</blockquete>
+-
+
+<blockquete>
 
 </blockquete>

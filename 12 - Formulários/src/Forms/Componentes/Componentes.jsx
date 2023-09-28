@@ -8,6 +8,7 @@ const Componentes  = () => {
 
     //Input
     const [nome, setNome] = React.useState('');
+    const [email, setEmail] = React.useState('');
 
     //Select
     const [produto, setProduto] = React.useState('');
@@ -21,42 +22,49 @@ const Componentes  = () => {
 
     return(
         <>
-            <div>
-                <h1>Componentes </h1>
+            <form>
+                <div>
+                    <h1>Componentes </h1>
+                    <br /><br />
+                    <h3>Input Generico</h3>
+                    <InputGenerico
+                        label="Nome"
+                        id="nome"
+                        type="text"
+                        value={nome}
+                        setValue={setNome}
+                        required
+                    />
+                </div>
+                <div>                    
+                    <InputGenerico
+                        label="Email"
+                        id="email"
+                        type="email"
+                        value={email}
+                        setValue={setEmail} 
+                    />
+                </div>
+                <div>
                 <br /><br />
-                <h3>Input Generico</h3>
-                <InputGenerico
-                    label="Nome"
-                    id="nome"
-                    type="text"
-                    value={nome}
-                    setValue={setNome} 
-                />
-            </div>
-            <div>
-            <br /><br />
-                <h3>Select Generico</h3>
-                <form>
+                    <h3>Select Generico</h3>                
                     <SelectGenerico
                         options={['Notebook', 'Smartphone', 'Tablet']}
                         value={produto}
                         setValue={setProduto}
                     />
-                </form>
-            </div>
-            <div>
-            <br /><br />
-                <h3>Radio Generico</h3>
-                <form>
+                </div>
+                <div>
+                <br /><br />
+                    <h3>Radio Generico</h3>                    
                     <RadioGenerico
                         options={['azul', 'verde', 'amarelo']}
                         value={cor}
                         setValue={setCor}
-                    />
-                </form>
-            </div>
-            <div>
-                <form>
+                    />                    
+                </div>
+                <br /><br />
+                <div>                   
                     <CheckboxGenerico
                         options={['Uva', 'Laranja', 'Limão']}
                         value={fruta}
@@ -67,9 +75,10 @@ const Componentes  = () => {
                         options={['Termos e Condições']}
                         value={termos}
                         setValue={setTermos}
-                    />
-                </form>    
-            </div>        
+                    />                     
+                </div> 
+                <button>Enviar</button>
+            </form>       
         </>
     )
 }

@@ -9,6 +9,7 @@ import Checkbox from './Forms/Checkbox/Checkbox';
 import Componentes from './Forms/Componentes/Componentes';
 import Validacao from './Forms/Validacao/Validacao';
 import UseForm from './Forms/UseForm/UseForm';
+import Desafio from './Forms/Desafio/Desafio';
 
 const App = () => {
   
@@ -39,6 +40,9 @@ const App = () => {
   }
   else if(pathname === '/useForm'){
     Component = UseForm
+  }
+  else if(pathname === '/desafio'){
+    Component = Desafio
   }
   else {
     Component = Home;

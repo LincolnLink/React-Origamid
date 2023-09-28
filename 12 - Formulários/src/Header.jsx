@@ -31,6 +31,9 @@ const Header = () => {
         <li>
           <a href="/useForm">UseForm</a>
         </li>
+        <li>
+          <a href="/desafio">Desafio</a>
+        </li>
       </ul>
     </header>
   );
