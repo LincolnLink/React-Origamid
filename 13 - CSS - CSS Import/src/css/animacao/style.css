@@ -1,0 +1,19 @@
+.animeLeft {
+    opacity: 0;
+    /*muda a animação*/
+    /*transform: translateX(-20px);*/ 
+    /*transform: scale(0.8);*/
+    transform: translateY(-20px);
+    animation: animeLeft 0.5s forwards;/* fica no estado final */ /*bom deixar 0.3*/
+  }
+  
+  @keyframes animeLeft {
+    from{
+      
+    }
+    to {
+      opacity: initial;
+      transform: initial;
+    }
+  }
+  

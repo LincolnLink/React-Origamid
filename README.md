@@ -426,6 +426,7 @@
   - OBS: muito melhor que "npx create-react-app", "npx create-react-app" usa webpack que é muito lento.
   - https://vitejs.dev/
   - Na pasta que deseja instalar:
+  - Escolha React. 
   
 <blockquete>
 
@@ -3036,7 +3037,7 @@
 </blockquete>
 
 
-# Desafio Formulários
+# Formulários - Desafio Formulários
 
  - fieldset : agrupa campos de formulartio(HTML)
 
@@ -3217,48 +3218,741 @@
 
 </blockquete>
 
--
+# CSS - CSS Import
+
+ - A forma mais simples de uso do CSS é importando o mesmo direto no JavaScript.
+
+ - O webpack que importa.
 
 <blockquete>
 
+          import './App.css';
+
 </blockquete>
--
+
+ ### Componentes
+
+ - Ao importar um componentes, os estilos importados do mesmo são automaticamente adicionados ao CSS final da build. Independente de você utilizar o componente ou não.
+
+ ### Conflito
+
+ - Todos os arquivos serão unidos em um CSS final e você é responsável por garantir que os seletores sejam específicos, para evitar conflito.
 
 <blockquete>
 
+        .Title {
+          font-size: 2rem;
+          font-family: sans-serif;
+        }
+        h1 {
+          color: tomato;
+        }
+        h1.Title {
+          font-family: serif;
+        }
+
 </blockquete>
--
+
+ ### Evite Conflitos
+
+ - Defina nomes únicos para os componentes e coloque classes com os mesmos nomes
+
+# CSS - CSS Modules
+
+ - Os modules garantem que as classes utilizada sejam sempre únicas, evitando o conflito. O modo já vem configurando com o Vite, basta definirmos o nome do arquivo css com a palavra .module. Ex: Produto.module.css. Devemos definir um nome para a importação, a mesma será transformada em um objeto que possui nomes únicos para as classes.
+
+ - webpack que gerencia esse module.
 
 <blockquete>
 
+        import styles from './Produto.module.css';
+
+        const Produto = () => {
+          return (
+            <div>
+              <h1 className={styles.titulo}>Notebook</h1>
+              <p className={styles.preco}>R$ 12000</p>
+              <button className={styles.comprar}>Comprar</button>
+            </div>
+          );
+        };
+
 </blockquete>
--
+
+ - Ele gera nomes de classes apenas, então utilize o objeto direto no className e não no atributo style
 
 <blockquete>
 
+        .titulo,
+        .preco {
+          color: #43c;
+        }
+
+        .preco {
+          font-weight: bold;
+        }
+
+        .comprar {
+          transform: rotate(90deg) translateY(-100px);
+        }
+
 </blockquete>
--
+
+ ### camelCase
+
+ - Utilize camelCase tituloPrincipal, já que o nome da classe se transformará em uma propriedade de um objeto JavaScript. Não utilize hífens titulo-principal.
 
 <blockquete>
 
+        .tituloPrincipal {
+          color: blue;
+        }
+
 </blockquete>
--
+
+ ### Funcionalidades Extras
+
+ - O CSS Modules disponibiliza algumas funcionalidades extras para o CSS, como a definição de variáveis, composição de elementos e definição de classes no contexto global. Não aconselho o uso, pois a sintaxe não é bem suportada pela IDE (VS Code) e pelo eslint.
 
 <blockquete>
 
+        .titulo {
+          color: #43c;
+        }
+
+        /* no local de composes use a vírgula .titulo, .preco {} */
+        .preco {
+          composes: titulo;
+          font-weight: bold;
+        }
+
+        /* no local de variáveis utilize variáveis de CSS com o var() */
+        @value width: 900px;
+
+        /* crie um css global utilizando o IMPORT puro para quando precisar de estilos globais */
+        :global .container {
+          max-width: width;
+        }
+
 </blockquete>
--
+
+ - Variavel do css: declara uma classe, na propriedade coloca --, repete o valor que tem -- em outras classes css.
+ 
+<blockquete>
+
+        .preco{
+          color: #43c;
+          --cor: red;
+        }
+
+        .preco{
+          color: var(--cor);
+        }
+
+</blockquete>
+
+# CSS - Styled Components
+
+ - Permite escrevermos o CSS diretamente no JavaScript. Ao invés de classes, criamos componentes com um estilo único.
 
 <blockquete>
 
+      import styled from 'styled-components';
+
+      const Title = styled.h1`
+        font-size: 1.5em;
+        color: tomato;
+      `;
+
+      const App = () => {
+        return (
+          <div>
+            <Title>Título principal</Title>
+          </div>
+        );
+      };
+
 </blockquete>
--
+
+ ### Instalação
+ 
+ - Plugin de VS Code: vscode-styled-components
 
 <blockquete>
 
+        npm install styled-components
+
 </blockquete>
--
+
+ ### styled
+
+ - O styled é um objeto com diferentes métodos que representam as tags de HTML.
 
 <blockquete>
 
+        const ProdutosContainer = styled.div`
+          display: flex;
+        `;
+
+        const Produto = styled.div`
+          flex: 1;
+        `;
+
+        const Titulo = styled.h1`
+          font-size: 2em;
+        `;
+
+        const Comprar = styled.button`
+          font-size: 1.5em;
+          background: transparent;
+          padding: 0.5rem;
+          border-radius: 4px;
+          border: 2px solid;
+          cursor: pointer;
+        `;
+
+        const Preco = styled.span`
+          background: #53d956;
+          color: white;
+          display: inline-block;
+          border-radius: 5px;
+          padding: 0.5rem;
+        `;
+
+        const App = () => {
+          return (
+            <ProdutosContainer>
+              <Produto>
+                <Titulo>
+                  Notebook <Preco>R$ 1999</Preco>
+                </Titulo>
+                <Comprar>Comprar</Comprar>
+              </Produto>
+              <Produto>
+                <Titulo>
+                  Smartphone <Preco>R$ 2999</Preco>
+                </Titulo>
+                <Comprar>Comprar</Comprar>
+              </Produto>
+            </ProdutosContainer>
+          );
+        };
+
 </blockquete>
+
+ ### Template String Transpilation
+
+ - O uso dos backticks para passarmos a string com os valores do CSS, é válido no JavaScript. Esses valores são passados como argumento da função.
+
+<blockquete>
+
+        function template(value, total) {
+          console.log(value);
+          console.log(total);
+        }
+        const total = 10;
+        template`São ${total} no total`;
+
+</blockquete>
+
+ ### Props
+
+ - Podemos passar propriedades como em um component de React.
+
+<blockquete>
+
+        const Preco = styled.p`
+          background: ${(props) => props.cor};
+          color: white;
+          display: inline-block;
+          border-radius: 5px;
+          padding: 0.5rem;
+        `;
+
+        const App = () => {
+          function template(value, total) {
+            console.log(value);
+            console.log(total);
+          }
+          const total = 10;
+          template`São ${total} no total`;
+
+          return (
+            <div>
+              <Preco cor="#53d956">R$ 2999</Preco>
+              <Preco cor="#84e">R$ 1999</Preco>
+            </div>
+          );
+        };
+
+</blockquete>
+
+ ### Estado
+
+ - Podemos passar o estado como uma propriedade e modificarmos certos estilos com base no mesmo.
+
+<blockquete>
+
+          import styled from 'styled-components';
+
+          const Button = styled.button`
+            background: ${({ ativo }) => (ativo ? '#53d956' : '#000')};
+            border: 1px solid black;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+          `;
+
+          const App = () => {
+            const [ativo, setAtivo] = React.useState(false);
+
+            return (
+              <Button ativo={ativo} onClick={() => setAtivo(!ativo)}>
+                Ativar
+              </Button>
+            );
+          };
+
+</blockquete>
+
+ ### Pseudo
+
+- Podemos definir o estado de :hover ou criar elementos com o ::after ou ::before utilizando o & na frente do elemento.
+
+<blockquete>
+
+        const Comprar = styled.button`
+          font-size: 1.5em;
+          background: transparent;
+          padding: 0.5rem;
+          border-radius: 4px;
+          border: 2px solid black;
+          cursor: pointer;
+          position: relative;
+          &:hover {
+            background: black;
+            color: white;
+          }
+          &::before {
+            display: block;
+            content: '';
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            position: absolute;
+            background: #53d956;
+            top: -8px;
+            right: -8px;
+          }
+        `;
+
+</blockquete>
+
+# CSS - CSS Frameworks
+
+ - Podemos adicionar qualquer library/framework de css ao React. Com o @next vamos instalar a versão 5 do bootstrap. Popper é necessário para algumas funções do bootstrap.
+
+<blockquete>
+
+        npm install bootstrap@next
+
+</blockquete>
+
+ - Existem frameworks de CSS que te fornecem componentes prontos para serem utilizados no local de classes. O react-bootstrap utiliza em sua base o bootstrap, mas fornece componentes React.
+
+<blockquete>
+
+        npm install react-bootstrap bootstrap
+
+</blockquete>
+
+# CSS - Animações
+
+ - Animação no css
+
+ - Anime a entrada de elementos utilizando a propriedade animation.
+
+ - Usando o "@keyframes"
+
+<blockquete>
+
+        .animeLeft {
+          opacity: 0;
+          transform: translateX(-20px);
+          animation: animeLeft 0.3s forwards;
+        }
+
+        @keyframes animeLeft {
+          to {
+            opacity: initial;
+            transform: initial;
+          }
+        }
+
+</blockquete>
+
+ ### Slide
+
+ - Anime a entrada de elementos utilizando a propriedade animation.
+
+<blockquete>
+
+      .container {
+        overflow: hidden;
+      }
+
+      .content {
+        display: flex;
+        z-index: 100;
+        transition: transform 0.3s ease;
+      }
+
+      .item {
+        flex-shrink: 0;
+        width: 80%;
+        margin: 0 10%;
+        border-radius: 4px;
+        background-color: #eee;
+        text-align: center;
+        padding: 10rem 0;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin: 1rem auto;
+      }
+
+</blockquete>
+
+ -
+
+<blockquete>
+
+        import React from 'react';
+        import styles from './Slide.module.css';
+
+        const Slide = ({ slides }) => {
+          const [active, setActive] = React.useState(0);
+          const [position, setPosition] = React.useState(0);
+          const contentRef = React.useRef();
+
+          React.useEffect(() => {
+            const { width } = contentRef.current.getBoundingClientRect();
+            setPosition(-(width * active));
+          }, [active]);
+
+          function slidePrev() {
+            if (active > 0) setActive(active - 1);
+          }
+
+          function slideNext() {
+            if (active < slides.length - 1) setActive(active + 1);
+          }
+
+          return (
+            <section className={styles.container}>
+              <div
+                ref={contentRef}
+                className={styles.content}
+                style={{ transform: `translateX(${position}px)` }}
+              >
+                {slides.map((slide) => (
+                  <div key={slide.id} className={styles.item}>
+                    {slide.text}
+                  </div>
+                ))}
+              </div>
+              <nav className={styles.nav}>
+                <button onClick={slidePrev}>Anterior</button>
+                <button onClick={slideNext}>Próximo</button>
+              </nav>
+            </section>
+          );
+        };
+
+        export default Slide;
+
+</blockquete>
+
+<blockquete>
+
+        import React from 'react';
+        import './App.css';
+        import Slide from './Slide';
+
+        const App = () => {
+          const slides = [
+            {
+              id: 'slide1',
+              text: 'Slide 1',
+            },
+            {
+              id: 'slide2',
+              text: 'Slide 2',
+            },
+            {
+              id: 'slide3',
+              text: 'Slide 3',
+            },
+          ];
+
+          return (
+            <div>
+              <Slide slides={slides} />
+            </div>
+          );
+        };
+
+        export default App;
+
+</blockquete>
+
+
+# CSS - Imagens
+
+ - Podemos importar a imagem direto para o componente. O webpack irá gerar o caminho correto na build final.
+
+ - No CSS podemos utilizar o caminho direto. É importante colocar o ./, pois o webpack vai utilizar isso e substituir para o caminho final do site.
+
+<blockquete>
+
+        .fundo {
+          width: 50px;
+          height: 50px;
+          background-image: url('./img/foto.jpg');
+          background-size: cover;
+        }
+
+</blockquete>
+
+ ### SVG
+
+ - Um svg pode ser adicionado da mesma forma que as anteriores, porém ele também pode ser adicionado como um componente. Dessa forma o código do SVG inteiro é injetado direto no HTML, dando maior controle sobre o mesmo.
+
+ - No Vite é necessário um plugin para ativar essa funcionalidade. No create-react-app essa funcionalidade vem instalada por padrão. A versão que funciona igual ao CRA é a 3.
+
+<blockquete>
+
+        npm install vite-plugin-svgr@3
+
+</blockquete>
+
+<blockquete>
+
+        import { defineConfig } from 'vite';
+        import react from '@vitejs/plugin-react';
+        import eslintPlugin from 'vite-plugin-eslint';
+        import svgr from 'vite-plugin-svgr';
+
+        // https://vitejs.dev/config/
+        export default defineConfig({
+          plugins: [
+            react(),
+            eslintPlugin({
+              cache: false,
+              include: ['./src/**/*.js', './src/**/*.jsx'],
+            }),
+            svgr(),
+          ],
+        });
+
+</blockquete>
+
+<blockquete>
+
+        import { ReactComponent as Dog } from './img/dog.svg';
+
+        const App = () => {
+          return (
+            <div>
+              <Dog />
+            </div>
+          );
+        };
+
+</blockquete>
+
+ ### Componentes SVG
+
+ - Além da importação direto como componentes, podemos também definirmos cada SVG como um componente. Lembre-se, propriedades que tiverem hífens serão modificadas: fill-rule vira fillRule
+
+<blockquete>
+
+        const DogSvg = ({ color }) => {
+          return (
+            <svg
+              width="28"
+              height="22"
+              viewBox="0 0 28 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14 10h1.652c1.708 0 2.63 2.004 1.518 3.302l-1.618 1.887A4.501 4.501 0 0024.5 14.5a1.5 1.5 0 013 0A7.5 7.5 0 0114 19 7.5 7.5 0 01.5 14.5a1.5 1.5 0 013 0 4.5 4.5 0 008.948.689l-1.618-1.887C9.718 12.004 10.64 10 12.35 10H14z"
+                fill={color}
+              />
+              <circle cx="21" cy="3" r="3" fill={color} />
+              <circle cx="7" cy="3" r="3" fill={color} />
+            </svg>
+          );
+        };
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+
+</blockquete>
+
+ -
+
+

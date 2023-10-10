@@ -1,0 +1,27 @@
+.container {
+    overflow: hidden; /*Esconde, não cria a barra scroll horizontal*/
+}
+
+.content {
+    display: flex; /*Uma ao lado do outro*/
+    z-index: 100;
+    transition: transform 0.3s ease; /*Animação quando modifica*/
+}
+  
+.item {
+    flex-shrink: 0; /*Deixa do tamanho que foi pedido, não compacta*/
+    width: 80%; /*completa a largura toda*/
+    margin: 0 10%; /*completa a largura toda*/
+    border-radius: 4px;
+    background-color: #eee;
+    text-align: center;
+    padding: 10rem 0; /*Deixa grande*/
+}
+  
+.nav {
+    display: flex;
+    justify-content: space-between;/* cada item em um lado*/
+    width: 80%;
+    margin: 1rem auto;
+}
+  
