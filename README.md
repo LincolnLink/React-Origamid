@@ -3866,13 +3866,407 @@
 
 </blockquete>
 
- -
+# React Router - Link
 
-
- -
+ - O Link irá modificar a rota e renderizar o novo componente sem recarregar a página.
 
 <blockquete>
 
+        import { Link } from 'react-router-dom';
+
+        const Header = () => {
+          return (
+            <nav>
+              <Link to="/">Home</Link>
+              <Link to="sobre">Sobre</Link>
+              <Link to="contato">Contato</Link>
+            </nav>
+          );
+        };
+
+</blockquete>
+
+ - App.jsx
+
+<blockquete>
+
+        import { BrowserRouter, Routes, Route } from 'react-router-dom';
+        import Header from './Header';
+        import Home from './Home';
+        import Sobre from './Sobre';
+        import Contato from './Contato';
+
+        const App = () => {
+          return (
+            <BrowserRouter>
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="sobre" element={<Sobre />} />
+                <Route path="contato" element={<Contato />} />
+              </Routes>
+            </BrowserRouter>
+          );
+        };
+
+</blockquete>
+
+ ### NavLink
+
+ - O NavLink funciona da mesma forma, mas adiciona uma classe ao link que estiver ativo. É necessário colocar o end no NavLink responsável por navegar para a raiz do app.
+
+<blockquete>
+
+        import './Header.css';
+        import { NavLink } from 'react-router-dom';
+
+        const Header = () => {
+          const activeStyle = {
+            color: 'tomato',
+          };
+          return (
+            <nav>
+              <NavLink to="/" end activeStyle={activeStyle}>
+                Home
+              </NavLink>
+              <NavLink to="sobre" activeStyle={activeStyle}>
+                Sobre
+              </NavLink>
+              <NavLink to="contato" activeStyle={activeStyle}>
+                Contato
+              </NavLink>
+            </nav>
+          );
+        };
+
+</blockquete>
+
+ ### useNavigate
+
+ - O hook useNavigate permite navegarmos programaticamente entre as rotas. Por exemplo, pode ser utilizado quando o usuário faz um login bem sucedido e enviamos o mesmo a página da sua conta.
+
+<blockquete>
+
+        import { useNavigate } from 'react-router-dom';
+
+        const Login = () => {
+          const navigate = useNavigate();
+
+          function handleClick() {
+            console.log('Faz o login');
+            navigate('/sobre');
+          }
+
+          return (
+            <div>
+              <button onClick={handleClick}>Login</button>
+            </div>
+          );
+        };
+
+</blockquete>
+
+ ### Atenção
+
+ - Pesquisar depois porque o "activeStyle" não está funcionando.
+
+# React Router - useParams
+
+ ### Rota Dinâmica
+
+ - O uso de :nome irá definir uma rota dinâmica, onde o nome poderá ser utilizado como uma variável dentro do componente. Serve para buscarmos rotas dinâmicas como produto/notebook ou produto/smartphone.
+ 
+<blockquete>
+
+        import { BrowserRouter, Routes, Route } from 'react-router-dom';
+        import Produto from './Produto';
+        import Home from './Home';
+        import Header from './Header';
+
+        const App = () => {
+          return (
+            <BrowserRouter>
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="produto/:id" element={<Produto />} />
+              </Routes>
+            </BrowserRouter>
+          );
+        };
+
+</blockquete>
+
+ ### useParams
+
+ - O hook useParams terá um objeto com todos os parâmetros da rota. É possível ter mais de um parâmetro.
+
+<blockquete>
+
+        import { useParams } from 'react-router-dom';
+
+        const Produto = () => {
+          const params = useParams();
+
+          return (
+            <div>
+              <h1>Produto</h1>
+              <p>id: {params.id}</p>
+            </div>
+          );
+        };
+
+</blockquete>
+
+ ### useLocation
+
+ - Retorna o objeto location, com diversas informações sobre a rota atual, como o caminho, parâmetros de busca e mais.
+
+ - Bota na URL: "produto?q=verde&memoria=16".
+
+ - usa o "useEffect" para criar alguma logica, quando toda rota muda.
+
+<blockquete>
+
+        import { useLocation } from 'react-router-dom';
+
+        const Header = () => {
+          const location = useLocation();
+
+          React.useEffect(() => {
+            const search = new URLSearchParams(location.search);
+            console.log(search.get('q'));
+            console.log('Toda vez que a rota mudar');
+          }, [location]);
+
+          return <div></div>;
+        };
+
+</blockquete>
+
+ - Existe também o:
+ 
+<blockquete>
+
+        const [searchParams, setSearchParams] = useSearchParams()
+
+</blockquete>
+
+# React Router - Nested Routes
+
+ - Utilizamos nested routes quando precizamos de rotas dentro de rotas. Como por exemplo: perfil/editar e perfil/certificados e etc. Utilize o \* para definir que existem outras rotas dentro.
+
+ - App
+
+<blockquete>
+
+        import { BrowserRouter, Routes, Route } from 'react-router-dom';
+        import Home from './Home';
+        import Sobre from './Sobre';
+        import Login from './Login';
+        import Produto from './Produto';
+        import Header from './Header';
+        import NaoEncontrada from './NaoEncontrada';
+
+        const App = () => {
+          return (
+            <BrowserRouter>
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="sobre" element={<Sobre />} />
+                <Route path="login" element={<Login />} />
+                <Route path="produto/:id/*" element={<Produto />} />
+                <Route path="*" element={<NaoEncontrada />} />
+              </Routes>
+            </BrowserRouter>
+          );
+        };
+
+</blockquete>
+
+ - Produto
+
+<blockquete>
+
+        import { useParams, Route, Routes, NavLink } from 'react-router-dom';
+        import ProdutoDescricao from './ProdutoDescricao';
+        import ProdutoAvaliacao from './ProdutoAvaliacao';
+        import ProdutoCustomizado from './ProdutoCustomizado';
+
+        const Produto = () => {
+          const params = useParams();
+
+          return (
+            <div>
+              <h1>Produto: {params.id}</h1>
+              <nav>
+                <NavLink to="">Descrição</NavLink>
+                <NavLink to="avaliacao">Avaliação</NavLink>
+                <NavLink to="customizado">Customizado</NavLink>
+              </nav>
+              <Routes>
+                <Route path="/" element={<ProdutoDescricao />} />
+                <Route path="avaliacao" element={<ProdutoAvaliacao />} />
+                <Route path="customizado" element={<ProdutoCustomizado />} />
+              </Routes>
+            </div>
+          );
+        };
+
+</blockquete>
+
+ ### Outlet
+
+ - Outra forma é definindo todos as rotas diretamente no App e utilizar o component Outlet para mostrarmos a rota.
+
+<blockquete>
+
+        const Produto = () => {
+          const params = useParams();
+
+          return (
+            <div>
+              <h1>Produto: {params.id}</h1>
+              <nav>
+                <NavLink to="">Descrição</NavLink>
+                <NavLink to="avaliacao">Avaliação</NavLink>
+                <NavLink to="customizado">Customizado</NavLink>
+              </nav>
+              <Outlet />
+            </div>
+          );
+        };
+
+</blockquete>
+
+ - App.js
+
+<blockquete>
+
+        import { BrowserRouter, Routes, Route } from 'react-router-dom';
+        import Home from './Home';
+        import Sobre from './Sobre';
+        import Login from './Login';
+        import Produto from './Produto';
+        import Header from './Header';
+        import NaoEncontrada from './NaoEncontrada';
+        import ProdutoDescricao from './ProdutoDescricao';
+        import ProdutoAvaliacao from './ProdutoAvaliacao';
+        import ProdutoCustomizado from './ProdutoCustomizado';
+
+        const App = () => {
+          return (
+            <BrowserRouter>
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="sobre" element={<Sobre />} />
+                <Route path="login" element={<Login />} />
+                <Route path="produto/:id/*" element={<Produto />}>
+                  <Route path="/" element={<ProdutoDescricao />} />
+                  <Route path="avaliacao" element={<ProdutoAvaliacao />} />
+                  <Route path="customizado" element={<ProdutoCustomizado />} />
+                </Route>
+                <Route path="*" element={<NaoEncontrada />} />
+              </Routes>
+            </BrowserRouter>
+          );
+        };
+        
+</blockquete>
+
+# React Router - Head
+
+ - No React não temos acesso direto as tags e informações do Head. Porém com o uso de rotas é essêncial realizar a mudança do título e descrição para cada rota. Podemos fazer isso através de um componente ou custom hook.
+
+ ### ATENÇÃO
+
+ - Com o VITE  é direfente, o index.html fica na pasta raiz.
+ - Usando o VITE é necessario a megatag description no index.html.
+ -  
+
+
+<blockquete>
+
+        const Head = (props) => {
+          React.useEffect(() => {
+            document.title = props.title;
+            document
+              .querySelector("meta[name='description']")
+              .setAttribute('content', props.description);
+          }, [props]);
+
+          return <></>;
+        };
+
+</blockquete>
+
+ - Sobre.js
+
+<blockquete>
+
+        import Head from './Head';
+
+        const Sobre = () => {
+          return (
+            <div>
+              <Head title="Página Sobre" description="Descrição da sobre" />
+              <h1>Sobre</h1>
+              <p>Essa é a Sobre</p>
+            </div>
+          );
+        };
+
+
+</blockquete>
+
+ - Home.js
+
+<blockquete>
+
+        import Head from './Head';
+
+        const Home = () => {
+          return (
+            <div>
+              <Head title="Página Home" description="Descrição da home" />
+              <h1>Home</h1>
+              <p>Essa é a home</p>
+            </div>
+          );
+        };
+
+</blockquete>
+
+ ### Helmet
+
+ - Uma extensão famosa é o react-helmet. Ela retonar com componente em que você pode definir tags do Head dentro do mesmo.
+
+ - https://github.com/nfl/react-helmet
+
+<blockquete>
+
+        npm install react-helmet
+
+</blockquete>
+
+<blockquete>
+
+        import { Helmet } from 'react-helmet';
+
+        const Home = () => {
+          return (
+            <div>
+              <Helmet>
+                <title>Página Home</title>
+                <meta name="description" content="Conteúdo da descrição" />
+              </Helmet>
+              <h1>Home</h1>
+              <p>Essa é a home</p>
+            </div>
+          );
+        };
 
 </blockquete>
 
@@ -3883,6 +4277,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3893,6 +4295,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3903,6 +4313,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3913,6 +4331,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3923,6 +4349,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3933,6 +4367,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3943,6 +4385,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3953,6 +4403,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3963,6 +4421,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3973,6 +4439,14 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
@@ -3983,6 +4457,41 @@
 
 <blockquete>
 
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
+
+</blockquete>
+
+ -
+
+
+ -
+
+<blockquete>
 
 </blockquete>
 
