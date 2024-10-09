@@ -4273,11 +4273,82 @@
 # Desenvolvendo o React Router - Desafio
 
  - Um projetos de rotas completo.
-
  - Retorno
-
-
  -
+
+<blockquete>
+
+</blockquete>
+
+
+# Desenvolvendo Mais React - ProtoType
+
+ - instala o prop-types, caso esteja usando o vite.
+
+<blockquete>
+
+    npm install prop-types
+
+</blockquete>
+
+- define as propriedades em um objeto, e usa depois na parte do HTML
+
+<blockquete>
+
+  Button.prototype = {
+    margin: PropTypes.string.isRequired,
+    width: PropTypes.number,
+    disabled: PropTypes.bool
+  }
+
+</blockquete>
+
+<blockquete>
+
+    <button
+         style={{
+            margin: props.margin,
+            width: `${props.width}px`,
+            height: `${props.width / 3}px`,
+         }}    
+        disabled={props.disabled}
+        >
+        {props.children}
+    </button>
+
+</blockquete>
+
+# Desenvolvendo Mais React - Lazy e Suspense
+
+ - Carrega o component sobdemanda.
+
+ - instala o jquery para testar, npm i jquery
+
+ - cria o component contato.
+
+<blockquete>
+
+</blockquete>
+
+# Desenvolvendo Mais React - Memo
+
+ - 
+
+<blockquete>
+
+</blockquete>
+
+# Desenvolvendo Mais React - useReducer
+
+ - 
+
+<blockquete>
+
+</blockquete>
+
+# Desenvolvendo Mais React - Classes
+
+ - 
 
 <blockquete>
 
