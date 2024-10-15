@@ -4326,15 +4326,26 @@
 
  - cria o component contato.
 
-<blockquete>
+ - roda o build com a importação do jquery e sem a importação do jquery.
 
-</blockquete>
+ - lazy é usado para carregar algo que foi importado.
+
+ - Suspense ele apenas guarda o component que vai ser chamado sobdemanda.
+
+ - tem que por um botão com uma condição para ser chamado apenas quando
+ clicado.
 
 # Desenvolvendo Mais React - Memo
 
- - 
+ - Ele não vai renderizar o component novamente mesmo que o pai dele tenha o status modificado.
+
+ - Quando for exportar usa o memo.
+
+ - Se passar um estado reativo para o component, o memo não vai funcionar e vai ser carregado.
 
 <blockquete>
+
+      export default React.memo(Header);
 
 </blockquete>
 

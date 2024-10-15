@@ -1,0 +1,8 @@
+.displayFlex{
+    display: flex !important;
+    
+}
+
+.displayFlex div{   
+    margin: 1em;
+}
