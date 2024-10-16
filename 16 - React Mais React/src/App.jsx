@@ -6,6 +6,7 @@ import Header from './Header';
 import Reduce from './Reduce';
 import UseReduceExemplo from './UseReduceExemplo';
 import UseReduceArray from './UseReduceArray';
+import Produtos from './classeExemplo';
 
 const App = () => {  
   const [ativo, setAtivo] = React.useState(false);
@@ -15,6 +16,7 @@ const App = () => {
   const titulo2 = <h1>Lazy Suspense</h1>;
   const titulo3 = <h1>React.Memo</h1>;
   const titulo4 = <h1>React.Reducer</h1>;
+  const titulo5 = <h1>Classe</h1>;
 
 
   
@@ -54,6 +56,11 @@ const App = () => {
 
       <p>Exemplo usando useReduce com switch</p>
       <UseReduceArray />
+      <br /><br /><br />
+
+      {titulo5}
+      <p></p>
+      <Produtos titulo="Esses são os produtos" />
       <br /><br /><br />
 
     </>
